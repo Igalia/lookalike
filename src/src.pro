@@ -1,5 +1,5 @@
 TEMPLATE    = app
-TARGET      = faceautorecognizer
+TARGET      = lookalike
 
 contains(debug, yes) {
     CONFIG += debug warn_on
@@ -25,16 +25,22 @@ MOC_DIR = build/
 CONFIG +=           \
     gallerycore     \
     link_pkgconfig  \
-    meegotouch
+    meegotouch      \
+    faceplatform    \
+    qtsparql
 
 SOURCES += \
     main.cpp \
-    faceautorecognizermain.cpp \
-    faceautorecognizermain_p.cpp
+    facedatabaseprovider.cpp \
+    nullthumbnailer.cpp \
+    lookalikemain.cpp \
+    lookalikemain_p.cpp
 
 HEADERS += \
-    faceautorecognizermain.h \
-    faceautorecognizermain_p.h
+    facedatabaseprovider.h \
+    nullthumbnailer.h \
+    lookalikemain.h \
+    lookalikemain_p.h
 
 message( "Settings:" )
 message( "C Compiler:" $$QMAKE_CC )
@@ -45,6 +51,18 @@ message( "C++ Debug flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_DEBUG )
 message( "C++ Release flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE  )
 message( "Linker flags:" $$QMAKE_LFLAGS )
 message( "LIBS flags:" $$QMAKE_LIBS )
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
