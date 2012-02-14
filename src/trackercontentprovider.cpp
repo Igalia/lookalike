@@ -1,9 +1,9 @@
 #include "trackercontentprovider.h"
 #include "trackercontentprovider_p.h"
 
-TrackerContentProvider::TrackerContentProvider(QObject *parent):
+TrackerContentProvider::TrackerContentProvider(QSparqlConnection *connection, QObject *parent):
     GalleryContentProvider(parent),
-    d_ptr(new TrackerContentProviderPrivate(this))
+    d_ptr(new TrackerContentProviderPrivate(connection, this))
 {
 }
 

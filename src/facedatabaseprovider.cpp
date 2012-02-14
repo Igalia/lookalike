@@ -1,5 +1,4 @@
 #include "facedatabaseprovider.h"
-#include <xqfacedatabase.h>
 #include "gallerypeoplelistpage.h"
 #include "nullthumbnailer.h"
 #include <QStandardItemModel>
@@ -71,7 +70,7 @@ void FaceDatabaseProvider::update()
             if (faceIds.isEmpty()) {
                 /* Unknown Id */
                 faceIds << "Unknown";
-                m_unknownImages << sourceId;
+                m_unknownRegions << faceRegion;
             }
             foreach(QString faceId, faceIds) {
                 /* Check if entry exists, and increase the count; or add it */
@@ -101,9 +100,9 @@ void FaceDatabaseProvider::update()
                     countItem->setText(QString().setNum(count));
                 }
                 if (faceId.startsWith(("urn:"))) {
-                    QSet<QString> images = m_suspectedImages.value(faceId);
-                    images << sourceId;
-                    m_suspectedImages.insert(faceId, images);
+                    QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
+                    regions << faceRegion;
+                    m_suspectedRegions.insert(faceId, regions);
                 }
             }
         }
@@ -114,12 +113,18 @@ void FaceDatabaseProvider::update()
     emit dataChanged(startIndex, endIndex);
 }
 
-QSet<QString>& FaceDatabaseProvider::getImages()
+QList<XQFaceRegion>& FaceDatabaseProvider::getRegions()
 {
-    return m_unknownImages;
+    return m_unknownRegions;
 }
 
-QSet<QString> FaceDatabaseProvider::getImages(const QString &faceId)
+QList<XQFaceRegion> FaceDatabaseProvider::getRegions(const QString &faceId)
 {
-    return m_suspectedImages.value(faceId);
+    return m_suspectedRegions.value(faceId);
+}
+
+QString FaceDatabaseProvider::getContactName(const QString &faceId)
+{
+    int row = findItems(faceId, Qt::MatchExactly, GalleryPeopleListPage::IdColumn).at(0)->row();
+    return index(row, 0).data().toString();
 }

@@ -11,7 +11,7 @@ class TrackerContentProviderPrivate : public QObject
 {
     Q_OBJECT
 public:
-    explicit TrackerContentProviderPrivate(QObject *parent = 0);
+    explicit TrackerContentProviderPrivate(QSparqlConnection *connection, QObject *parent = 0);
     void buildQuery(int limit = -1);
 
     TrackerLiveQuery *m_liveQuery;

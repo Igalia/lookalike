@@ -2,13 +2,15 @@
 #define TRACKERCONTENTPROVIDER_H
 
 #include "gallerycontentprovider.h"
+
 class TrackerContentProviderPrivate;
+class QSparqlConnection;
 
 class TrackerContentProvider : public GalleryContentProvider
 {
     Q_OBJECT
 public:
-    TrackerContentProvider(QObject *parent = 0);
+    TrackerContentProvider(QSparqlConnection *connection, QObject *parent = 0);
     QAbstractItemModel *model() const;
     virtual bool isLoadingContent() const;
     virtual void queryContent(int limit=-1);

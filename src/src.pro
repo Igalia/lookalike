@@ -27,6 +27,7 @@ CONFIG +=           \
     link_pkgconfig  \
     meegotouch      \
     faceplatform    \
+    quillmetadata   \
     qtsparql        \
     qtsparql-tracker-live
 
