@@ -27,20 +27,25 @@ CONFIG +=           \
     link_pkgconfig  \
     meegotouch      \
     faceplatform    \
-    qtsparql
+    qtsparql        \
+    qtsparql-tracker-live
 
 SOURCES += \
     main.cpp \
     facedatabaseprovider.cpp \
     nullthumbnailer.cpp \
     lookalikemain.cpp \
-    lookalikemain_p.cpp
+    lookalikemain_p.cpp \
+    trackercontentprovider.cpp \
+    trackercontentprovider_p.cpp
 
 HEADERS += \
     facedatabaseprovider.h \
     nullthumbnailer.h \
     lookalikemain.h \
-    lookalikemain_p.h
+    lookalikemain_p.h \
+    trackercontentprovider.h \
+    trackercontentprovider_p.h
 
 message( "Settings:" )
 message( "C Compiler:" $$QMAKE_CC )
@@ -51,6 +56,10 @@ message( "C++ Debug flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_DEBUG )
 message( "C++ Release flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE  )
 message( "Linker flags:" $$QMAKE_LFLAGS )
 message( "LIBS flags:" $$QMAKE_LIBS )
+
+
+
+
 
 
 

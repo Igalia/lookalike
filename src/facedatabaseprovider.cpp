@@ -71,6 +71,7 @@ void FaceDatabaseProvider::update()
             if (faceIds.isEmpty()) {
                 /* Unknown Id */
                 faceIds << "Unknown";
+                m_unknownImages << sourceId;
             }
             foreach(QString faceId, faceIds) {
                 /* Check if entry exists, and increase the count; or add it */
@@ -99,6 +100,11 @@ void FaceDatabaseProvider::update()
                     count++;
                     countItem->setText(QString().setNum(count));
                 }
+                if (faceId.startsWith(("urn:"))) {
+                    QSet<QString> images = m_suspectedImages.value(faceId);
+                    images << sourceId;
+                    m_suspectedImages.insert(faceId, images);
+                }
             }
         }
     }
@@ -108,3 +114,12 @@ void FaceDatabaseProvider::update()
     emit dataChanged(startIndex, endIndex);
 }
 
+QSet<QString>& FaceDatabaseProvider::getImages()
+{
+    return m_unknownImages;
+}
+
+QSet<QString> FaceDatabaseProvider::getImages(const QString &faceId)
+{
+    return m_suspectedImages.value(faceId);
+}
