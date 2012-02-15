@@ -1,6 +1,6 @@
-#include "trackercontentprovider_p.h"
 #include "QSparqlConnection"
 #include "QStringList"
+#include "trackercontentprovider_p.h"
 
 TrackerContentProviderPrivate::TrackerContentProviderPrivate(TrackerContentProvider *q, QSparqlConnection *connection) :
     QObject(q),

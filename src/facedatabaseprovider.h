@@ -1,13 +1,13 @@
 #ifndef FACEDATABASEPROVIDER_H
 #define FACEDATABASEPROVIDER_H
 
-#include <QStandardItemModel>
 #include <QList>
+#include <QStandardItemModel>
 #include <xqfacedatabase.h>
 
-class XQFaceDatabase;
-class QStandardItemModel;
 class QSparqlConnection;
+class QStandardItemModel;
+class XQFaceDatabase;
 
 class FaceDatabaseProvider : public QStandardItemModel
 {

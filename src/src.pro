@@ -22,30 +22,30 @@ INSTALLS += target
 OBJECTS_DIR = build/
 MOC_DIR = build/
 
-CONFIG +=           \
-    gallerycore     \
-    link_pkgconfig  \
-    meegotouch      \
-    faceplatform    \
-    quillmetadata   \
-    qtsparql        \
-    qtsparql-tracker-live
+CONFIG +=                   \
+   faceplatform             \
+    gallerycore             \
+    link_pkgconfig          \
+    meegotouch              \
+    qtsparql                \
+    qtsparql-tracker-live   \
+    quillmetadata
 
-SOURCES += \
-    main.cpp \
-    facedatabaseprovider.cpp \
-    nullthumbnailer.cpp \
-    lookalikemain.cpp \
-    lookalikemain_p.cpp \
-    trackercontentprovider.cpp \
+SOURCES +=                      \
+    facedatabaseprovider.cpp    \
+    lookalikemain.cpp           \
+    lookalikemain_p.cpp         \
+    main.cpp                    \
+    nullthumbnailer.cpp         \
+    trackercontentprovider.cpp  \
     trackercontentprovider_p.cpp
 
-HEADERS += \
-    facedatabaseprovider.h \
-    nullthumbnailer.h \
-    lookalikemain.h \
-    lookalikemain_p.h \
-    trackercontentprovider.h \
+HEADERS +=                      \
+    facedatabaseprovider.h      \
+    lookalikemain.h             \
+    lookalikemain_p.h           \
+    nullthumbnailer.h           \
+    trackercontentprovider.h    \
     trackercontentprovider_p.h
 
 message( "Settings:" )

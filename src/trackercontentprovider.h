@@ -3,8 +3,8 @@
 
 #include "gallerycontentprovider.h"
 
-class TrackerContentProviderPrivate;
 class QSparqlConnection;
+class TrackerContentProviderPrivate;
 
 class TrackerContentProvider : public GalleryContentProvider
 {

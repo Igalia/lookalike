@@ -1,21 +1,21 @@
-#include "lookalikemain_p.h"
-#include "math.h"
-#include "gallerypeoplelistpage.h"
+#include "facedatabaseprovider.h"
 #include "gallerygridpage.h"
 #include "gallerymodel.h"
-#include "facedatabaseprovider.h"
+#include "gallerypeoplelistpage.h"
+#include "lookalikemain_p.h"
+#include "math.h"
 #include "trackercontentprovider.h"
+#include <MAction>
 #include <MApplication>
+#include <MApplicationPage>
 #include <MApplicationWindow>
 #include <MSceneManager>
-#include <MApplicationPage>
 #include <QAbstractItemModel>
-#include <xqfacedatabase.h>
-#include <MAction>
 #include <QSparqlConnection>
+#include <QuillMetadata>
 #include <QuillMetadataRegion>
 #include <QuillMetadataRegionList>
-#include <QuillMetadata>
+#include <xqfacedatabase.h>
 
 LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     QObject(q),

@@ -1,10 +1,10 @@
 #include "facedatabaseprovider.h"
 #include "gallerypeoplelistpage.h"
 #include "nullthumbnailer.h"
-#include <QStandardItemModel>
+#include <QSparqlConnection>
 #include <QSparqlQuery>
 #include <QSparqlResult>
-#include <QSparqlConnection>
+#include <QStandardItemModel>
 #include <QUrl>
 
 FaceDatabaseProvider::FaceDatabaseProvider(QObject *parent) :

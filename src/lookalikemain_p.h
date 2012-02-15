@@ -2,20 +2,20 @@
 #define LOOKALIKEMAIN_P_H
 
 #include "lookalikemain.h"
-#include <QObject>
 #include <QAbstractItemModel>
+#include <QObject>
 #include <QUrl>
 
-class GalleryPeopleListPage;
+class FaceDatabaseProvider;
 class GalleryGridPage;
 class GalleryModel;
+class GalleryPeopleListPage;
+class MAction;
 class MApplicationPage;
+class QSparqlConnection;
+class TrackerContentProvider;
 class XQFaceDatabase;
 class XQFaceRegion;
-class FaceDatabaseProvider;
-class TrackerContentProvider;
-class MAction;
-class QSparqlConnection;
 
 class LookAlikeMainPrivate : public QObject
 {
