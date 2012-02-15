@@ -10,6 +10,12 @@ TrackerContentProviderPrivate::TrackerContentProviderPrivate(QSparqlConnection *
 {
 }
 
+
+TrackerContentProviderPrivate::~TrackerContentProviderPrivate()
+{
+    deleteLiveQuery();
+}
+
 void TrackerContentProviderPrivate::buildQuery(int limit)
 {
     QString sparqlStubSentence("SELECT\n"
@@ -46,6 +52,7 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
         mainSentence += QString("LIMIT %1").arg(limit);
     }
 
+    deleteLiveQuery();
     m_liveQuery = new TrackerLiveQuery(mainSentence, 9, *m_sparqlConnection);
     TrackerPartialUpdater updater(updateSentence);
     updater.watchClass("nmm:Photo",
@@ -56,4 +63,13 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
     m_liveQuery->addUpdater(updater);
     m_liveQuery->setIdentityColumns(QList<int>() << 8);
     m_liveQuery->setUpdatesEnabled(true);
+}
+
+
+void TrackerContentProviderPrivate::deleteLiveQuery()
+{
+    if (m_liveQuery != 0) {
+        delete m_liveQuery;
+        m_liveQuery = 0;
+    }
 }

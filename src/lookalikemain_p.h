@@ -27,6 +27,7 @@ public:
     QString urnFromUrl(QUrl url);
     XQFaceRegion findRegion(QString &faceId, QString &sourceId);
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
+    void updateTrackerFilter(const QString &personId);
 
     QSparqlConnection *m_sparqlConnection;
     TrackerContentProvider *m_trackerProvider;

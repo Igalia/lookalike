@@ -103,12 +103,8 @@ QRect LookAlikeMainPrivate::scaleRect(const QRect &rect, QSize &fromSize, QSize 
     return QRect(x, y, width, height);
 }
 
-void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
+void LookAlikeMainPrivate::updateTrackerFilter(const QString &personId)
 {
-    m_personSelected = personId;
-    m_gridPage->setTopBarText(displayName);
-    m_gridPage->showTopBar(true);
-    m_gridPage->resetToDefaultState();
     m_galleryModel->removeContentProvider(m_trackerProvider);
     QList<XQFaceRegion> regions;
     if (personId.startsWith("urn:")) {
@@ -116,12 +112,22 @@ void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QStri
     } else {
         regions = m_faceDatabaseProvider->getRegions();
     }
+
     QSet<QString> urnImages;
-    foreach(XQFaceRegion r, regions) {
-        urnImages << r.sourceId();
+    foreach(XQFaceRegion region, regions) {
+        urnImages << region.sourceId();
     }
     m_trackerProvider->setUrns(urnImages);
     m_galleryModel->addContentProvider(m_trackerProvider);
+}
+
+void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
+{
+    m_personSelected = personId;
+    m_gridPage->setTopBarText(displayName);
+    m_gridPage->showTopBar(true);
+    m_gridPage->resetToDefaultState();
+    updateTrackerFilter(personId);
     m_gridPage->appear(MApplication::activeWindow());
 }
 
@@ -156,4 +162,7 @@ void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
         metadata.setEntry(QuillMetadata::Tag_Regions, variant);
         metadata.write(fileName, QuillMetadata::XmpFormat);
     }
+
+    m_faceDatabaseProvider->update();
+    updateTrackerFilter(m_personSelected);
 }

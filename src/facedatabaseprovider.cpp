@@ -59,6 +59,9 @@ void FaceDatabaseProvider::update()
 {
     QAbstractItemModel *faceGroupsModel = m_faceDatabase->faceGroups(XQFaceDatabase::UnnamedGroup);
     clear();
+    m_unknownRegions.clear();
+    m_suspectedRegions.clear();
+
     /* Add the results into our model */
     for (int faceGroupRow = 0; faceGroupRow < faceGroupsModel->rowCount(); faceGroupRow++) {
         XQFaceGroup faceGroup = m_faceDatabase->faceGroup(faceGroupsModel->index(faceGroupRow, 0).data().toString());

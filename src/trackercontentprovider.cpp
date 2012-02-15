@@ -12,6 +12,7 @@ void TrackerContentProvider::queryContent(int limit)
     Q_D(TrackerContentProvider);
 
     if (d->m_urnSet.isEmpty()) {
+        d->deleteLiveQuery();
         emit initialQueryFinished();
         return;
     }
