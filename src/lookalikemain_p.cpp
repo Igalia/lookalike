@@ -43,6 +43,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onMultiSelectionDone(QList<QUrl>)));
     connect(m_gridPage, SIGNAL(itemSelected(QUrl)),
             this, SLOT(onItemSelected(QUrl)));
+    connect(m_fullScreenPage, SIGNAL(itemDeleted(QUrl)),
+            m_faceDatabaseProvider, SLOT(update()));
 }
 
 LookAlikeMainPrivate::~LookAlikeMainPrivate()

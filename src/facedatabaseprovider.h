@@ -15,9 +15,11 @@ class FaceDatabaseProvider : public QStandardItemModel
 public:
     explicit FaceDatabaseProvider(QObject *parent = 0);
     ~FaceDatabaseProvider();
-    void update();
     QList<XQFaceRegion> getRegions(const QString &faceId);
     QString getContactName(const QString &faceId);
+
+public slots:
+    void update();
 
 private:
     QStringList resolveContact(QString &contactUrn);
