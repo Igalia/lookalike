@@ -7,9 +7,9 @@
 #include <QStandardItemModel>
 #include <QUrl>
 
-FaceDatabaseProvider::FaceDatabaseProvider(QObject *parent) :
+FaceDatabaseProvider::FaceDatabaseProvider(QSparqlConnection *connection, QObject *parent) :
     QStandardItemModel(0, GalleryPeopleListPage::CeilingColumn, parent),
-    m_sparqlConnection(new QSparqlConnection(QLatin1String("QTRACKER_DIRECT")))
+    m_sparqlConnection(connection)
 {
     QString databaseName = QString(getenv("XDG_DATA_HOME")) + "/gallerycore/data/faces.db";
     NullThumbnailer thumbnailer;
@@ -19,7 +19,6 @@ FaceDatabaseProvider::FaceDatabaseProvider(QObject *parent) :
 
 FaceDatabaseProvider::~FaceDatabaseProvider()
 {
-    delete m_sparqlConnection;
     delete m_faceDatabase;
 }
 

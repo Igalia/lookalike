@@ -22,12 +22,12 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     QObject(q),
     q_ptr(q)
 {
-    m_sparqlConnection = new QSparqlConnection(QLatin1String("QTRACKER_DIRECT"));
     m_galleryModel = new GalleryModel(this);
     m_galleryModel->setFaceRecognitionEnabled(true);
-    m_trackerProvider = new TrackerContentProvider(m_sparqlConnection, this);
+    QSparqlConnection *connection = m_galleryModel->sparqlConnection();
+    m_trackerProvider = new TrackerContentProvider(connection, this);
     m_galleryModel->addContentProvider(m_trackerProvider);
-    m_faceDatabaseProvider = new FaceDatabaseProvider(this);
+    m_faceDatabaseProvider = new FaceDatabaseProvider(connection, this);
     m_peopleListPage = new GalleryPeopleListPage(m_faceDatabaseProvider);
     m_gridPage = new GalleryGridPage(*m_galleryModel);
     m_fullScreenPage = new GalleryFullScreenPage(*m_galleryModel);
@@ -52,7 +52,6 @@ LookAlikeMainPrivate::~LookAlikeMainPrivate()
     m_galleryModel->removeContentProvider(m_trackerProvider);
     delete m_peopleListPage;
     delete m_gridPage;
-    delete m_sparqlConnection;
 }
 
 void LookAlikeMainPrivate::showPage()

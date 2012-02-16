@@ -30,7 +30,6 @@ public:
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
     void updateTrackerFilter(const QString &personId);
 
-    QSparqlConnection *m_sparqlConnection;
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;
     GalleryPeopleListPage *m_peopleListPage;

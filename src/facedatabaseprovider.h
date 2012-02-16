@@ -13,7 +13,7 @@ class FaceDatabaseProvider : public QStandardItemModel
 {
     Q_OBJECT
 public:
-    explicit FaceDatabaseProvider(QObject *parent = 0);
+    explicit FaceDatabaseProvider(QSparqlConnection *connection, QObject *parent = 0);
     ~FaceDatabaseProvider();
     QList<XQFaceRegion> getRegions(const QString &faceId);
     QString getContactName(const QString &faceId);
