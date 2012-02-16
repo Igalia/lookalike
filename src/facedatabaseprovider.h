@@ -16,7 +16,6 @@ public:
     explicit FaceDatabaseProvider(QObject *parent = 0);
     ~FaceDatabaseProvider();
     void update();
-    QList<XQFaceRegion>& getRegions();
     QList<XQFaceRegion> getRegions(const QString &faceId);
     QString getContactName(const QString &faceId);
 
@@ -27,7 +26,6 @@ private:
     XQFaceDatabase *m_faceDatabase;
     QStandardItemModel *m_model;
     QSparqlConnection *m_sparqlConnection;
-    QList<XQFaceRegion> m_unknownRegions;
     QHash<QString, QList<XQFaceRegion> > m_suspectedRegions;
 };
 

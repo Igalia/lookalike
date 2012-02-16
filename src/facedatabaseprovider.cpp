@@ -59,7 +59,6 @@ void FaceDatabaseProvider::update()
 {
     QAbstractItemModel *faceGroupsModel = m_faceDatabase->faceGroups(XQFaceDatabase::UnnamedGroup);
     clear();
-    m_unknownRegions.clear();
     m_suspectedRegions.clear();
 
     /* Add the results into our model */
@@ -71,9 +70,7 @@ void FaceDatabaseProvider::update()
             XQFaceRegion faceRegion = faceGroup.faceRegion(sourceId);
             QStringList faceIds = faceRegion.faceIds();
             if (faceIds.isEmpty()) {
-                /* Unknown Id */
-                faceIds << "Unknown";
-                m_unknownRegions << faceRegion;
+                continue;
             }
             foreach(QString faceId, faceIds) {
                 /* Check if entry exists, and increase the count; or add it */
@@ -102,11 +99,11 @@ void FaceDatabaseProvider::update()
                     count++;
                     countItem->setText(QString().setNum(count));
                 }
-                if (faceId.startsWith(("urn:"))) {
-                    QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
-                    regions << faceRegion;
-                    m_suspectedRegions.insert(faceId, regions);
-                }
+
+
+                QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
+                regions << faceRegion;
+                m_suspectedRegions.insert(faceId, regions);
             }
         }
     }
@@ -114,11 +111,6 @@ void FaceDatabaseProvider::update()
     QModelIndex startIndex = index(0,0);
     QModelIndex endIndex = index(rowCount()-1, GalleryPeopleListPage::CeilingColumn);
     emit dataChanged(startIndex, endIndex);
-}
-
-QList<XQFaceRegion>& FaceDatabaseProvider::getRegions()
-{
-    return m_unknownRegions;
 }
 
 QList<XQFaceRegion> FaceDatabaseProvider::getRegions(const QString &faceId)

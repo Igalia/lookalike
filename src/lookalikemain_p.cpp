@@ -74,13 +74,8 @@ QString LookAlikeMainPrivate::urnFromUrl(QUrl url)
 
 XQFaceRegion LookAlikeMainPrivate::findRegion(QString &faceId, QString &sourceId)
 {
-    QList<XQFaceRegion> regions;
+    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(faceId);
 
-    if (faceId.startsWith("urn:")) {
-        regions = m_faceDatabaseProvider->getRegions(faceId);
-    } else {
-        regions = m_faceDatabaseProvider->getRegions();
-    }
     foreach (XQFaceRegion r, regions) {
         if (r.sourceId() == sourceId) {
             return r;
@@ -111,13 +106,7 @@ QRect LookAlikeMainPrivate::scaleRect(const QRect &rect, QSize &fromSize, QSize 
 void LookAlikeMainPrivate::updateTrackerFilter(const QString &personId)
 {
     m_galleryModel->removeContentProvider(m_trackerProvider);
-    QList<XQFaceRegion> regions;
-    if (personId.startsWith("urn:")) {
-        regions = m_faceDatabaseProvider->getRegions(personId);
-    } else {
-        regions = m_faceDatabaseProvider->getRegions();
-    }
-
+    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(personId);
     QSet<QString> urnImages;
     foreach(XQFaceRegion region, regions) {
         urnImages << region.sourceId();
