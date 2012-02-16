@@ -1,4 +1,5 @@
 #include "facedatabaseprovider.h"
+#include "galleryfullscreenpage.h"
 #include "gallerygridpage.h"
 #include "gallerymodel.h"
 #include "gallerypeoplelistpage.h"
@@ -23,11 +24,13 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
 {
     m_sparqlConnection = new QSparqlConnection(QLatin1String("QTRACKER_DIRECT"));
     m_galleryModel = new GalleryModel(this);
+    m_galleryModel->setFaceRecognitionEnabled(true);
     m_trackerProvider = new TrackerContentProvider(m_sparqlConnection, this);
     m_galleryModel->addContentProvider(m_trackerProvider);
     m_faceDatabaseProvider = new FaceDatabaseProvider(this);
     m_peopleListPage = new GalleryPeopleListPage(m_faceDatabaseProvider);
     m_gridPage = new GalleryGridPage(*m_galleryModel);
+    m_fullScreenPage = new GalleryFullScreenPage(*m_galleryModel);
     m_confirmFaceAction = new MAction("Confirm faces", this);
     m_confirmFaceAction->setLocation(MAction::ApplicationMenuLocation);
     m_confirmFaceAction->setObjectName("ConfirmFacesAction");
@@ -38,7 +41,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onConfirmFaceActionTriggered()));
     connect(m_gridPage, SIGNAL(multiSelectionDone(QList<QUrl>)),
             this, SLOT(onMultiSelectionDone(QList<QUrl>)));
-    m_faceDatabaseProvider->update();
+    connect(m_gridPage, SIGNAL(itemSelected(QUrl)),
+            this, SLOT(onItemSelected(QUrl)));
 }
 
 LookAlikeMainPrivate::~LookAlikeMainPrivate()
@@ -166,4 +170,12 @@ void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
 
     m_faceDatabaseProvider->update();
     updateTrackerFilter(m_personSelected);
+}
+
+void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
+{
+    m_fullScreenPage->resetToDefaultState();
+    m_fullScreenPage->moveToItem(url);
+    m_fullScreenPage->appear(MApplication::activeWindow());
+    m_fullScreenPage->setNavigationBarVisible(false);
 }

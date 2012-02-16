@@ -7,6 +7,7 @@
 #include <QUrl>
 
 class FaceDatabaseProvider;
+class GalleryFullScreenPage;
 class GalleryGridPage;
 class GalleryModel;
 class GalleryPeopleListPage;
@@ -34,6 +35,7 @@ public:
     GalleryModel *m_galleryModel;
     GalleryPeopleListPage *m_peopleListPage;
     GalleryGridPage *m_gridPage;
+    GalleryFullScreenPage *m_fullScreenPage;
     FaceDatabaseProvider *m_faceDatabaseProvider;
     MAction *m_confirmFaceAction;
     QString m_personSelected;
@@ -42,6 +44,7 @@ public slots:
     void onPersonSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
+    void onItemSelected(const QUrl& url);
 
 private:
     LookAlikeMain *q_ptr;
