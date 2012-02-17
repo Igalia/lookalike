@@ -15,6 +15,10 @@ FaceDatabaseProvider::FaceDatabaseProvider(QSparqlConnection *connection, QObjec
     NullThumbnailer thumbnailer;
     m_faceDatabase = new XQFaceDatabase(thumbnailer, databaseName);
     update();
+    connect(m_faceDatabase, SIGNAL(faceUpdated(XQFaceRegion,QString)),
+            this, SLOT(update()));
+    connect(m_faceDatabase, SIGNAL(groupMerged(QString,QString)),
+            this, SLOT(update()));
 }
 
 FaceDatabaseProvider::~FaceDatabaseProvider()

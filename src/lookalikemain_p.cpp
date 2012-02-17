@@ -45,6 +45,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onItemSelected(QUrl)));
     connect(m_fullScreenPage, SIGNAL(itemDeleted(QUrl)),
             m_faceDatabaseProvider, SLOT(update()));
+    connect(m_trackerProvider, SIGNAL(dataChanged()),
+            this, SLOT(onDataChanged()));
 }
 
 LookAlikeMainPrivate::~LookAlikeMainPrivate()
@@ -157,9 +159,6 @@ void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
         metadata.setEntry(QuillMetadata::Tag_Regions, variant);
         metadata.write(fileName, QuillMetadata::XmpFormat);
     }
-
-    m_faceDatabaseProvider->update();
-    updateTrackerFilter(m_personSelected);
 }
 
 void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
@@ -168,4 +167,10 @@ void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
     m_fullScreenPage->moveToItem(url);
     m_fullScreenPage->appear(MApplication::activeWindow());
     m_fullScreenPage->setNavigationBarVisible(false);
+}
+
+void LookAlikeMainPrivate::onDataChanged()
+{
+    m_faceDatabaseProvider->update();
+    updateTrackerFilter(m_personSelected);
 }

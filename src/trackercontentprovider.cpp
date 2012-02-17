@@ -1,3 +1,5 @@
+#include <QAbstractItemModel>
+#include <QDebug>
 #include "trackercontentprovider.h"
 #include "trackercontentprovider_p.h"
 
@@ -13,7 +15,7 @@ void TrackerContentProvider::queryContent(int limit)
 
     if (d->m_urnSet.isEmpty()) {
         d->deleteLiveQuery();
-        emit initialQueryFinished();
+        onInitialQueryFinished();
         return;
     }
     d->m_queryRunning = true;
@@ -28,6 +30,11 @@ void TrackerContentProvider::onInitialQueryFinished()
     Q_D(TrackerContentProvider);
 
     d->m_queryRunning = false;
+    QAbstractItemModel *m = model();
+    if (m != 0) {
+        connect(m, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+                this, SIGNAL(dataChanged()),Qt::UniqueConnection);
+    }
     emit initialQueryFinished();
 }
 

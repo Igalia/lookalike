@@ -16,6 +16,9 @@ public:
     virtual void queryContent(int limit=-1);
     void setUrns(QSet<QString>& urnList);
 
+signals:
+    void dataChanged();
+
 private slots:
     void onInitialQueryFinished();
 

@@ -44,6 +44,7 @@ public slots:
     void onConfirmFaceActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
+    void onDataChanged();
 
 private:
     LookAlikeMain *q_ptr;

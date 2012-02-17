@@ -1,3 +1,4 @@
+#include "QAbstractItemModel"
 #include "QSparqlConnection"
 #include "QStringList"
 #include "trackercontentprovider_p.h"
@@ -28,6 +29,7 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
                          "  nfo:duration AS duration\n"
                          "  ?urn AS urn\n"
                          "  \"false\"^^xsd:boolean AS virtual\n"
+                         "  COUNT(nfo:hasRegionOfInterest(?urn)) AS totalRegions\n"
                          "  tracker:id(?urn) AS trackerid\n"
                          "WHERE {\n"
                          "  ?urn rdf:type nfo:Visual ;\n"
@@ -35,7 +37,8 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
                          "  FILTER(?urn  IN (%1) ) .\n"
                          "  OPTIONAL { ?urn nie:contentCreated ?created } .\n"
                          "  %2"
-                         "}\n");
+                         "}\n"
+                         "GROUP BY ?urn\n");
 
     QString urnList;
     QSetIterator<QString> iter(m_urnSet);
@@ -54,15 +57,16 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
     }
 
     deleteLiveQuery();
-    m_liveQuery = new TrackerLiveQuery(mainSentence, 9, *m_sparqlConnection);
+    m_liveQuery = new TrackerLiveQuery(mainSentence, 10, *m_sparqlConnection);
     TrackerPartialUpdater updater(updateSentence);
     updater.watchClass("nmm:Photo",
                        QStringList(),
                        "tracker:id(?urn) in %LIST",
                        TrackerPartialUpdater::Subject,
-                       8);
+                       9);
+
     m_liveQuery->addUpdater(updater);
-    m_liveQuery->setIdentityColumns(QList<int>() << 8);
+    m_liveQuery->setIdentityColumns(QList<int>() << 9);
     m_liveQuery->setUpdatesEnabled(true);
 }
 
@@ -70,7 +74,7 @@ void TrackerContentProviderPrivate::buildQuery(int limit)
 void TrackerContentProviderPrivate::deleteLiveQuery()
 {
     if (m_liveQuery != 0) {
-        delete m_liveQuery;
+        m_liveQuery->deleteLater();
         m_liveQuery = 0;
     }
 }
