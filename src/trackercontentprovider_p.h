@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSet>
 #include <TrackerLiveQuery>
+#include "trackercontentprovider.h"
 
 class SparqlConnection;
 
@@ -11,7 +12,7 @@ class TrackerContentProviderPrivate : public QObject
 {
     Q_OBJECT
 public:
-    explicit TrackerContentProviderPrivate(QSparqlConnection *connection, QObject *parent = 0);
+    explicit TrackerContentProviderPrivate(TrackerContentProvider *q, QSparqlConnection *connection);
     ~TrackerContentProviderPrivate();
     void buildQuery(int limit = -1);
     void deleteLiveQuery();
@@ -22,6 +23,8 @@ public:
 
 private:
     QSparqlConnection *m_sparqlConnection;
+    TrackerContentProvider *q_ptr;
+    Q_DECLARE_PUBLIC(TrackerContentProvider);
 };
 
 #endif // TRACKERCONTENTPROVIDER_P_H

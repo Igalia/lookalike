@@ -17,8 +17,9 @@
 #include <QuillMetadataRegionList>
 #include <QuillMetadata>
 
-LookAlikeMainPrivate::LookAlikeMainPrivate(QObject *parent) :
-    QObject(parent)
+LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
+    QObject(q),
+    q_ptr(q)
 {
     m_sparqlConnection = new QSparqlConnection(QLatin1String("QTRACKER_DIRECT"));
     m_galleryModel = new GalleryModel(this);

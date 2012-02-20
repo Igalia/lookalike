@@ -2,11 +2,12 @@
 #include "QSparqlConnection"
 #include "QStringList"
 
-TrackerContentProviderPrivate::TrackerContentProviderPrivate(QSparqlConnection *connection, QObject *parent) :
-    QObject(parent),
+TrackerContentProviderPrivate::TrackerContentProviderPrivate(TrackerContentProvider *q, QSparqlConnection *connection) :
+    QObject(q),
     m_liveQuery(0),
     m_queryRunning(false),
-    m_sparqlConnection(connection)
+    m_sparqlConnection(connection),
+    q_ptr(q)
 {
 }
 

@@ -21,7 +21,7 @@ class LookAlikeMainPrivate : public QObject
 {
     Q_OBJECT
 public:
-    explicit LookAlikeMainPrivate(QObject *parent = 0);
+    explicit LookAlikeMainPrivate(LookAlikeMain *q);
     ~LookAlikeMainPrivate();
     void showPage();
     QString urnFromUrl(QUrl url);

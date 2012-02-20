@@ -3,7 +3,7 @@
 
 TrackerContentProvider::TrackerContentProvider(QSparqlConnection *connection, QObject *parent):
     GalleryContentProvider(parent),
-    d_ptr(new TrackerContentProviderPrivate(connection, this))
+    d_ptr(new TrackerContentProviderPrivate(this, connection))
 {
 }
 
