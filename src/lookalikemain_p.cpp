@@ -36,6 +36,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     m_fullScreenPage = new GalleryFullScreenPage(*m_galleryModel);
 
     m_peopleListPage->setStyleName("GalleryPage");
+    m_gridPage->setStyleName("GalleryPage");
+    m_fullScreenPage->setStyleName("GalleryPage");
 
     MAction* unknownTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
     unknownTabAction->setLocation(MAction::ToolBarLocation);
@@ -48,18 +50,18 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     peopleTabAction->setCheckable(true);
     peopleTabAction->setChecked(true);
     peopleTabAction->setToggledIconID("icon-m-toolbar-people-selected");
-    peopleTabAction->setObjectName("PeopleTabButton");
 
     QList<QAction*> actions;
     actions.append(unknownTabAction);
     actions.append(peopleTabAction);
 
     MToolBar* toolbar = new MToolBar();
+    toolbar->setStyleName("MToolbarTabStyleInverted");
+    toolbar->setOpacity(0.9);
     toolbar->setViewType(MToolBar::tabType);
     toolbar->addActions(actions);
 
     m_toolbarAction = new MWidgetAction(q);
-    m_toolbarAction->setObjectName("ContentAction");
     m_toolbarAction->setLocation(MAction::ToolBarLocation);
     m_toolbarAction->setWidget(toolbar);
 
