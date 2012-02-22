@@ -32,6 +32,7 @@ public:
     void updateGrid();
     void updateGrid(const QString& displayName);
     void showPage(MApplicationPage *page);
+    void confirmFace(QUrl image, QString& contact);
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;

@@ -195,6 +195,37 @@ void LookAlikeMainPrivate::showPage(MApplicationPage *page)
     MApplication::activeWindow()->sceneManager()->setPageHistory(QList<MSceneWindow*>());
 }
 
+void LookAlikeMainPrivate::confirmFace(QUrl picture, QString& contact)
+{
+    //Confirm in Face Recognizer database
+    QString urnImage = urnFromUrl(picture);
+    XQFaceRegion region = findRegion(contact, urnImage);
+    region.setFaceId(contact);
+
+    //Update XMP metadata image
+    QString fileName = picture.toLocalFile();
+    QImage image(fileName);
+    //Scale face to image dimensions
+    QSize originalSize = image.size();
+    QSize thumbnailSize = region.sourceImageSize();
+    QRect rect = region.faceRect();
+    QRect scaledRect = scaleRect(rect, thumbnailSize, originalSize);
+    QuillMetadataRegion metadataRegion;
+    metadataRegion.setArea(scaledRect);
+    metadataRegion.setType(QuillMetadataRegion::RegionType_Face);
+    QString contactName = m_faceDatabaseProvider->getContactName(contact);
+    metadataRegion.setName(contactName);
+    metadataRegion.setExtension("nco:PersonContact", contact);
+    QuillMetadataRegionList regionList;
+    regionList.append(metadataRegion);
+    QuillMetadata metadata(fileName, QuillMetadata::XmpFormat);
+    QVariant variant;
+    variant.setValue(regionList);
+    metadata.setEntry(QuillMetadata::Tag_Regions, variant);
+    metadata.write(fileName, QuillMetadata::XmpFormat);
+
+}
+
 void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
 {
     m_personSelected = personId;
@@ -211,28 +242,7 @@ void LookAlikeMainPrivate::onConfirmFaceActionTriggered()
 void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
 {
     for (int i = 0; i < urlList.size(); i++) {
-        QString contactName = m_faceDatabaseProvider->getContactName(m_personSelected);
-        QString fileName = urlList.at(i).toLocalFile();
-        QString urnImage = urnFromUrl(urlList.at(i));
-        XQFaceRegion region = findRegion(m_personSelected, urnImage);
-        region.setFaceId(m_personSelected);
-        QImage image(fileName);
-        QSize originalSize = image.size();
-        QSize thumbnailSize = region.sourceImageSize();
-        QRect rect = region.faceRect();
-        QRect scaledRect = scaleRect(rect, thumbnailSize, originalSize);
-        QuillMetadataRegion metadataRegion;
-        metadataRegion.setArea(scaledRect);
-        metadataRegion.setType(QuillMetadataRegion::RegionType_Face);
-        metadataRegion.setName(contactName);
-        metadataRegion.setExtension("nco:PersonContact", m_personSelected);
-        QuillMetadataRegionList regionList;
-        regionList.append(metadataRegion);
-        QuillMetadata metadata(fileName, QuillMetadata::XmpFormat);
-        QVariant variant;
-        variant.setValue(regionList);
-        metadata.setEntry(QuillMetadata::Tag_Regions, variant);
-        metadata.write(fileName, QuillMetadata::XmpFormat);
+        confirmFace(urlList.at(i), m_personSelected);
     }
 }
 
