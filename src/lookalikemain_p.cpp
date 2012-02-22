@@ -42,13 +42,11 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     MAction* unknownTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
     unknownTabAction->setLocation(MAction::ToolBarLocation);
     unknownTabAction->setCheckable(true);
-    unknownTabAction->setChecked(false);
     unknownTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
 
     MAction* peopleTabAction = new MAction("icon-m-toolbar-people-white", "", q);
     peopleTabAction->setLocation(MAction::ToolBarLocation);
     peopleTabAction->setCheckable(true);
-    peopleTabAction->setChecked(true);
     peopleTabAction->setToggledIconID("icon-m-toolbar-people-selected");
 
     QList<QAction*> actions;
@@ -97,6 +95,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onUnknownTabActionToggled(bool)));
     connect(peopleTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onPeopleTabActionToggled(bool)));
+
+    peopleTabAction->toggle();
 }
 
 LookAlikeMainPrivate::~LookAlikeMainPrivate()
@@ -104,13 +104,6 @@ LookAlikeMainPrivate::~LookAlikeMainPrivate()
     m_galleryModel->removeContentProvider(m_trackerProvider);
     delete m_peopleListPage;
     delete m_gridPage;
-}
-
-void LookAlikeMainPrivate::showPage()
-{
-    if (m_peopleListPage && MApplication::activeApplicationWindow() && MApplication::activeApplicationWindow()->sceneManager()) {
-        MApplication::activeApplicationWindow()->sceneManager()->appearSceneWindowNow(m_peopleListPage);
-    }
 }
 
 QString LookAlikeMainPrivate::urnFromUrl(QUrl url)
@@ -196,6 +189,12 @@ void LookAlikeMainPrivate::updateGrid(const QString &displayName)
     m_gridPage->resetToDefaultState();
 }
 
+void LookAlikeMainPrivate::showPage(MApplicationPage *page)
+{
+    MApplication::activeApplicationWindow()->sceneManager()->appearSceneWindowNow(page);
+    MApplication::activeWindow()->sceneManager()->setPageHistory(QList<MSceneWindow*>());
+}
+
 void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
 {
     m_personSelected = personId;
@@ -257,8 +256,7 @@ void LookAlikeMainPrivate::onUnknownTabActionToggled(bool toggled)
         m_personSelected = QString();
         updateGrid();
         updateTrackerFilter();
-        MApplication::activeApplicationWindow()->sceneManager()->appearSceneWindowNow(m_gridPage);
-        MApplication::activeWindow()->sceneManager()->setPageHistory(QList<MSceneWindow*>());
+        showPage(m_gridPage);
     }
 }
 
@@ -266,7 +264,6 @@ void LookAlikeMainPrivate::onPeopleTabActionToggled(bool toggled)
 {
     if (toggled) {
         m_personSelected = QString();
-        MApplication::activeApplicationWindow()->sceneManager()->appearSceneWindowNow(m_peopleListPage);
-        MApplication::activeWindow()->sceneManager()->setPageHistory(QList<MSceneWindow*>());
+        showPage(m_peopleListPage);
     }
 }

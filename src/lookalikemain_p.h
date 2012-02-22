@@ -25,13 +25,13 @@ class LookAlikeMainPrivate : public QObject
 public:
     explicit LookAlikeMainPrivate(LookAlikeMain *q);
     ~LookAlikeMainPrivate();
-    void showPage();
     QString urnFromUrl(QUrl url);
     XQFaceRegion findRegion(QString &faceId, QString &sourceId);
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
     void updateTrackerFilter();
     void updateGrid();
     void updateGrid(const QString& displayName);
+    void showPage(MApplicationPage *page);
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;

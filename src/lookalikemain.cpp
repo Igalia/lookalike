@@ -7,6 +7,4 @@ LookAlikeMain::LookAlikeMain(QObject *parent) :
     QObject(parent),
     d_ptr(new LookAlikeMainPrivate(this))
 {
-    Q_D(LookAlikeMain);
-    d->showPage();
 }
