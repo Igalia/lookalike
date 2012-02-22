@@ -63,6 +63,7 @@ void FaceDatabaseProvider::update()
     QAbstractItemModel *faceGroupsModel = m_faceDatabase->faceGroups(XQFaceDatabase::UnnamedGroup);
     clear();
     m_suspectedRegions.clear();
+    m_unknownPictures.clear();
 
     /* Add the results into our model */
     for (int faceGroupRow = 0; faceGroupRow < faceGroupsModel->rowCount(); faceGroupRow++) {
@@ -73,6 +74,7 @@ void FaceDatabaseProvider::update()
             XQFaceRegion faceRegion = faceGroup.faceRegion(sourceId);
             QStringList faceIds = faceRegion.faceIds();
             if (faceIds.isEmpty()) {
+                m_unknownPictures.append(sourceId);
                 continue;
             }
             foreach(QString faceId, faceIds) {
@@ -103,7 +105,6 @@ void FaceDatabaseProvider::update()
                     countItem->setText(QString().setNum(count));
                 }
 
-
                 QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
                 regions << faceRegion;
                 m_suspectedRegions.insert(faceId, regions);
@@ -125,4 +126,9 @@ QString FaceDatabaseProvider::getContactName(const QString &faceId)
 {
     int row = findItems(faceId, Qt::MatchExactly, GalleryPeopleListPage::IdColumn).at(0)->row();
     return index(row, 0).data().toString();
+}
+
+QList<QString>& FaceDatabaseProvider::getUnknownPictures()
+{
+    return m_unknownPictures;
 }

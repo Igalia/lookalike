@@ -17,6 +17,7 @@ public:
     ~FaceDatabaseProvider();
     QList<XQFaceRegion> getRegions(const QString &faceId);
     QString getContactName(const QString &faceId);
+    QList<QString>& getUnknownPictures();
 
 public slots:
     void update();
@@ -29,6 +30,7 @@ private:
     QStandardItemModel *m_model;
     QSparqlConnection *m_sparqlConnection;
     QHash<QString, QList<XQFaceRegion> > m_suspectedRegions;
+    QList<QString> m_unknownPictures;
 };
 
 #endif // FACEDATABASEPROVIDER_H

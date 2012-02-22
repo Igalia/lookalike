@@ -13,6 +13,7 @@ class GalleryModel;
 class GalleryPeopleListPage;
 class MAction;
 class MApplicationPage;
+class MWidgetAction;
 class QSparqlConnection;
 class TrackerContentProvider;
 class XQFaceDatabase;
@@ -28,7 +29,9 @@ public:
     QString urnFromUrl(QUrl url);
     XQFaceRegion findRegion(QString &faceId, QString &sourceId);
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
-    void updateTrackerFilter(const QString &personId);
+    void updateTrackerFilter();
+    void updateGrid();
+    void updateGrid(const QString& displayName);
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;
@@ -36,8 +39,9 @@ public:
     GalleryGridPage *m_gridPage;
     GalleryFullScreenPage *m_fullScreenPage;
     FaceDatabaseProvider *m_faceDatabaseProvider;
-    MAction *m_confirmFaceAction;
     QString m_personSelected;
+    MAction* m_confirmFaceAction;
+    MWidgetAction* m_toolbarAction;
 
 public slots:
     void onPersonSelected(const QString &personId, const QString &displayName);
@@ -45,6 +49,8 @@ public slots:
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
     void onDataChanged();
+    void onUnknownTabActionToggled(bool toggled);
+    void onPeopleTabActionToggled(bool toggled);
 
 private:
     LookAlikeMain *q_ptr;
