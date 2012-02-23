@@ -14,6 +14,8 @@ class GalleryPeopleListPage;
 class MAction;
 class MApplicationPage;
 class MWidgetAction;
+class MDialog;
+class MProgressIndicator;
 class QSparqlConnection;
 class TrackerContentProvider;
 class XQFaceDatabase;
@@ -43,8 +45,12 @@ public:
     QString m_personSelected;
     MAction* m_confirmFaceAction;
     MWidgetAction* m_toolbarAction;
+    QList<QUrl> m_facesToConfirm;
+    MDialog* m_progressDialog;
+    MProgressIndicator *m_progress;
 
 public slots:
+    void confirmFaces();
     void onPersonSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
@@ -52,6 +58,7 @@ public slots:
     void onDataChanged();
     void onUnknownTabActionToggled(bool toggled);
     void onPeopleTabActionToggled(bool toggled);
+    void onProgressDialogRejected();
 
 private:
     LookAlikeMain *q_ptr;

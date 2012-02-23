@@ -10,12 +10,15 @@
 #include <MApplication>
 #include <MApplicationPage>
 #include <MApplicationWindow>
+#include <MDialog>
 #include <MImageWidget>
+#include <MProgressIndicator>
 #include <MSceneManager>
 #include <MToolBar>
 #include <MWidgetAction>
 #include <QAbstractItemModel>
 #include <QSparqlConnection>
+#include <QTimer>
 #include <QuillMetadata>
 #include <QuillMetadataRegion>
 #include <QuillMetadataRegionList>
@@ -181,6 +184,8 @@ void LookAlikeMainPrivate::updateGrid(const QString &displayName)
     m_gridPage->setTopBarText(displayName);
     m_gridPage->showTopBar(true);
     m_gridPage->removeAction(m_toolbarAction);
+    //Remove and insert again to ensure it is always the first action
+    m_gridPage->removeAction(m_confirmFaceAction);
     if (m_gridPage->actions().isEmpty()) {
         m_gridPage->addAction(m_confirmFaceAction);
     } else {
@@ -241,8 +246,33 @@ void LookAlikeMainPrivate::onConfirmFaceActionTriggered()
 
 void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
 {
-    for (int i = 0; i < urlList.size(); i++) {
-        confirmFace(urlList.at(i), m_personSelected);
+    m_facesToConfirm = urlList;
+    m_progress = new MProgressIndicator(0, MProgressIndicator::barType);
+    m_progress->setStyleName(("CommonProgressBarInverted"));
+    m_progress->setRange(0, urlList.size());
+    m_progressDialog = new MDialog();
+    m_progressDialog->setCentralWidget(m_progress);
+    m_progressDialog->appear(MSceneWindow::DestroyWhenDone);
+
+    connect(m_progressDialog, SIGNAL(appeared()),
+            this, SLOT(confirmFaces()),
+            Qt::QueuedConnection);
+    connect(m_progressDialog, SIGNAL(rejected()),
+            this, SLOT(onProgressDialogRejected()));
+    connect(m_progress, SIGNAL(valueChanged(int)),
+            this, SLOT(confirmFaces()),
+            Qt::QueuedConnection);
+}
+
+void LookAlikeMainPrivate::confirmFaces()
+{
+    if (m_facesToConfirm.isEmpty()) {
+        m_progressDialog->dismiss();
+    } else {
+        QUrl toConfirm = m_facesToConfirm.first();
+        confirmFace(toConfirm, m_personSelected);
+        m_facesToConfirm.removeFirst();
+        m_progress->setValue(m_progress->value() + 1);
     }
 }
 
@@ -276,4 +306,9 @@ void LookAlikeMainPrivate::onPeopleTabActionToggled(bool toggled)
         m_personSelected = QString();
         showPage(m_peopleListPage);
     }
+}
+
+void LookAlikeMainPrivate::onProgressDialogRejected()
+{
+    m_facesToConfirm.clear();
 }
