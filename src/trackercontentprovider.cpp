@@ -74,10 +74,5 @@ void TrackerContentProvider::setUrns(QSet<QString> &urnList)
 
 void TrackerContentProvider::setContentType(ContentType t)
 {
-    Q_D(TrackerContentProvider);
-
-    if (m_contentType != t) {
-        m_contentType = t;
-        queryContent(d->m_limit);
-    }
+    m_contentType = t;
 }

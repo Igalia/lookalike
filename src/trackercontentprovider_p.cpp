@@ -87,7 +87,7 @@ void TrackerContentProviderPrivate::buildQueryAllImages()
                          "  ?urn rdf:type nmm:Photo ;\n"
                          "       tracker:available \"true\"^^xsd:boolean .\n"
                          "  OPTIONAL { ?urn nie:contentCreated ?created } .\n"
-                         "  %2"
+                         "  %1"
                          "}\n");
     QString mainSentence = QString(sparqlStubSentence).arg("");
     QString updateSentence = QString(sparqlStubSentence).arg("%FILTER\n");

@@ -33,6 +33,7 @@ CONFIG +=                   \
 
 SOURCES +=                      \
     facedatabaseprovider.cpp    \
+    facetrackerprovider.cpp     \
     lookalikemain.cpp           \
     lookalikemain_p.cpp         \
     main.cpp                    \
@@ -42,6 +43,7 @@ SOURCES +=                      \
 
 HEADERS +=                      \
     facedatabaseprovider.h      \
+    facetrackerprovider.h       \
     lookalikemain.h             \
     lookalikemain_p.h           \
     nullthumbnailer.h           \

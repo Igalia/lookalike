@@ -7,6 +7,7 @@
 #include <QUrl>
 
 class FaceDatabaseProvider;
+class FaceTrackerProvider;
 class GalleryFullScreenPage;
 class GalleryGridPage;
 class GalleryModel;
@@ -33,15 +34,17 @@ public:
     void updateTrackerFilter();
     void updateGrid();
     void updateGrid(const QString& displayName, bool addConfirmationMenu = true);
-    void showPage(MApplicationPage *page);
+    void showPage(MApplicationPage *page, bool history = false);
     void confirmFace(QUrl image, QString& contact);
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;
-    GalleryPeopleListPage *m_peopleListPage;
+    GalleryPeopleListPage *m_unconfirmedPeopleListPage;
+    GalleryPeopleListPage *m_confirmedPeopleListPage;
     GalleryGridPage *m_gridPage;
     GalleryFullScreenPage *m_fullScreenPage;
     FaceDatabaseProvider *m_faceDatabaseProvider;
+    FaceTrackerProvider *m_faceTrackerProvider;
     QString m_personSelected;
     MAction* m_confirmFaceAction;
     MWidgetAction* m_toolbarAction;
@@ -57,7 +60,8 @@ public slots:
     void onItemSelected(const QUrl& url);
     void onDataChanged();
     void onAllTabActionToggled(bool toggled);
-    void onPeopleTabActionToggled(bool toggled);
+    void onUnconfirmedPeopleTabActionToggled(bool toggled);
+    void onConfirmedPeopleTabActionToggled(bool toggled);
     void onProgressDialogRejected();
 
 private:
