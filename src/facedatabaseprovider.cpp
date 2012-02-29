@@ -63,9 +63,8 @@ void FaceDatabaseProvider::update()
     QAbstractItemModel *faceGroupsModel = m_faceDatabase->faceGroups(XQFaceDatabase::UnnamedGroup);
     clear();
     m_suspectedRegions.clear();
-    m_unknownPictures.clear();
 
-    /* Add the results into our model */
+    /* Add to our hash all the (faceid, <regions>) */
     for (int faceGroupRow = 0; faceGroupRow < faceGroupsModel->rowCount(); faceGroupRow++) {
         XQFaceGroup faceGroup = m_faceDatabase->faceGroup(faceGroupsModel->index(faceGroupRow, 0).data().toString());
         QAbstractItemModel *facesModel = faceGroup.faces();
@@ -74,44 +73,46 @@ void FaceDatabaseProvider::update()
             XQFaceRegion faceRegion = faceGroup.faceRegion(sourceId);
             QStringList faceIds = faceRegion.faceIds();
             if (faceIds.isEmpty()) {
-                m_unknownPictures.append(sourceId);
+                addRegion(UNKNOWN_CONTACT, faceRegion);
                 continue;
             }
             foreach(QString faceId, faceIds) {
-                /* Check if entry exists, and increase the count; or add it */
-                QList<QStandardItem *> row = findItems(faceId, Qt::MatchExactly, GalleryPeopleListPage::IdColumn);
-                if (row.isEmpty()) {
-                    if (faceId.startsWith("urn:")) {
-                        QStringList resolvedValues = resolveContact(faceId);
-                        if (!resolvedValues.isEmpty()) {
-                            row << new QStandardItem(resolvedValues[0]);
-                            row << new QStandardItem("1");
-                            row << new QStandardItem(resolvedValues[1]);
-                            row << new QStandardItem(faceId);
-                            appendRow(row);
-                        }
-                    } else {
-                        row << new QStandardItem(faceId);
-                        row << new QStandardItem("1");
-                        row << new QStandardItem(faceRegion.thumbnailPath());
-                        row << new QStandardItem(faceId);
-                        appendRow(row);
-                    }
-                } else {
-                    QModelIndex index = indexFromItem(row[0]);
-                    QStandardItem *countItem = item(index.row(), GalleryPeopleListPage::CountColumn);
-                    int count = countItem->text().toInt();
-                    count++;
-                    countItem->setText(QString().setNum(count));
-                }
-
-                QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
-                regions << faceRegion;
-                m_suspectedRegions.insert(faceId, regions);
+                addRegion(faceId, faceRegion);
             }
         }
     }
 
+    /* Based on previous data, create the model */
+    foreach(QString key, m_suspectedRegions.keys()) {
+        if (key == UNKNOWN_CONTACT) {
+            /* Let's keep unknown contact for the end */
+            continue;
+        }
+        QStringList resolvedValues = resolveContact(key);
+        if (resolvedValues.isEmpty()) {
+            /* The contact does not exist; let's move all the regions to unknown contact */
+            moveRegions(key, UNKNOWN_CONTACT);
+        } else {
+            QList<QStandardItem *> row;
+            row << new QStandardItem(resolvedValues[0]);
+            row << new QStandardItem(QString().setNum(m_suspectedRegions.value(key).count()));
+            row << new QStandardItem(resolvedValues[1]);
+            row << new QStandardItem(key);
+            appendRow(row);
+        }
+    }
+
+    /* Add the unknown contact, if needed */
+    if (m_suspectedRegions.contains(UNKNOWN_CONTACT)) {
+        QList<QStandardItem *> row;
+        row << new QStandardItem("Unknown");
+        row << new QStandardItem(QString().setNum(m_suspectedRegions.value(UNKNOWN_CONTACT).count()));
+        row << new QStandardItem("/usr/share/icons/hicolor/64x64/apps/icon-l-lookalike.png");
+        row << new QStandardItem(UNKNOWN_CONTACT);
+        insertRow(0, row);
+    }
+
+    /* Notify model change */
     QModelIndex startIndex = index(0,0);
     QModelIndex endIndex = index(rowCount()-1, GalleryPeopleListPage::CeilingColumn);
     emit dataChanged(startIndex, endIndex);
@@ -128,7 +129,17 @@ QString FaceDatabaseProvider::getContactName(const QString &faceId)
     return index(row, 0).data().toString();
 }
 
-QList<QString>& FaceDatabaseProvider::getUnknownPictures()
+void FaceDatabaseProvider::addRegion(QString &faceId, XQFaceRegion &region)
 {
-    return m_unknownPictures;
+    QList<XQFaceRegion> regions = m_suspectedRegions.value(faceId);
+    regions << region;
+    m_suspectedRegions.insert(faceId, regions);
+}
+
+void FaceDatabaseProvider::moveRegions(QString &fromFaceId, QString &toFaceId)
+{
+    QList<XQFaceRegion> fromRegions = m_suspectedRegions.take(fromFaceId);
+    QList<XQFaceRegion> toRegions = m_suspectedRegions.value(toFaceId);
+    toRegions << fromRegions;
+    m_suspectedRegions.insert(toFaceId, toRegions);
 }

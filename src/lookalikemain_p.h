@@ -32,7 +32,7 @@ public:
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
     void updateTrackerFilter();
     void updateGrid();
-    void updateGrid(const QString& displayName);
+    void updateGrid(const QString& displayName, bool addConfirmationMenu = true);
     void showPage(MApplicationPage *page);
     void confirmFace(QUrl image, QString& contact);
 

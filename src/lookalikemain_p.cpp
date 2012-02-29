@@ -156,16 +156,9 @@ void LookAlikeMainPrivate::updateTrackerFilter()
 {
     m_galleryModel->removeContentProvider(m_trackerProvider);
     QSet<QString> urnImages;
-    if (m_personSelected.isNull()) {
-        QList<QString> images = m_faceDatabaseProvider->getUnknownPictures();
-        foreach(QString image, images) {
-            urnImages << image;
-        }
-    } else {
-        QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
-        foreach(XQFaceRegion region, regions) {
-            urnImages << region.sourceId();
-        }
+    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
+    foreach(XQFaceRegion region, regions) {
+        urnImages << region.sourceId();
     }
     m_trackerProvider->setUrns(urnImages);
     m_galleryModel->addContentProvider(m_trackerProvider);
@@ -179,17 +172,19 @@ void LookAlikeMainPrivate::updateGrid()
     m_gridPage->resetToDefaultState();
 }
 
-void LookAlikeMainPrivate::updateGrid(const QString &displayName)
+void LookAlikeMainPrivate::updateGrid(const QString &displayName, bool addConfirmationMenu)
 {
     m_gridPage->setTopBarText(displayName);
     m_gridPage->showTopBar(true);
     m_gridPage->removeAction(m_toolbarAction);
     //Remove and insert again to ensure it is always the first action
     m_gridPage->removeAction(m_confirmFaceAction);
-    if (m_gridPage->actions().isEmpty()) {
-        m_gridPage->addAction(m_confirmFaceAction);
-    } else {
-        m_gridPage->insertAction(m_gridPage->actions().first(), m_confirmFaceAction);
+    if (addConfirmationMenu) {
+        if (m_gridPage->actions().isEmpty()) {
+            m_gridPage->addAction(m_confirmFaceAction);
+        } else {
+            m_gridPage->insertAction(m_gridPage->actions().first(), m_confirmFaceAction);
+        }
     }
     m_gridPage->resetToDefaultState();
 }
@@ -234,7 +229,11 @@ void LookAlikeMainPrivate::confirmFace(QUrl picture, QString& contact)
 void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
 {
     m_personSelected = personId;
-    updateGrid(displayName);
+    if (m_personSelected == UNKNOWN_CONTACT) {
+        updateGrid(displayName, false);
+    } else {
+        updateGrid(displayName, true);
+    }
     updateTrackerFilter();
     m_gridPage->appear(MApplication::activeWindow());
 }
@@ -293,7 +292,7 @@ void LookAlikeMainPrivate::onDataChanged()
 void LookAlikeMainPrivate::onUnknownTabActionToggled(bool toggled)
 {
     if (toggled) {
-        m_personSelected = QString();
+        m_personSelected = UNKNOWN_CONTACT;
         updateGrid();
         updateTrackerFilter();
         showPage(m_gridPage);
@@ -303,7 +302,7 @@ void LookAlikeMainPrivate::onUnknownTabActionToggled(bool toggled)
 void LookAlikeMainPrivate::onPeopleTabActionToggled(bool toggled)
 {
     if (toggled) {
-        m_personSelected = QString();
+        m_personSelected = UNKNOWN_CONTACT;
         showPage(m_peopleListPage);
     }
 }
