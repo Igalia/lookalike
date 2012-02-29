@@ -14,12 +14,14 @@ class TrackerContentProviderPrivate : public QObject
 public:
     explicit TrackerContentProviderPrivate(TrackerContentProvider *q, QSparqlConnection *connection);
     ~TrackerContentProviderPrivate();
-    void buildQuery(int limit = -1);
+    void buildQueryListImages();
+    void buildQueryAllImages();
     void deleteLiveQuery();
 
     TrackerLiveQuery *m_liveQuery;
     bool m_queryRunning;
     QSet<QString> m_urnSet;
+    int m_limit;
 
 private:
     QSparqlConnection *m_sparqlConnection;

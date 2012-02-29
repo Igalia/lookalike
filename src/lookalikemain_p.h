@@ -56,7 +56,7 @@ public slots:
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
     void onDataChanged();
-    void onUnknownTabActionToggled(bool toggled);
+    void onAllTabActionToggled(bool toggled);
     void onPeopleTabActionToggled(bool toggled);
     void onProgressDialogRejected();
 

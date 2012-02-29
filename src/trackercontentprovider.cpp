@@ -13,15 +13,28 @@ void TrackerContentProvider::queryContent(int limit)
 {
     Q_D(TrackerContentProvider);
 
-    if (d->m_urnSet.isEmpty()) {
-        d->deleteLiveQuery();
-        onInitialQueryFinished();
+    d->m_limit = limit;
+    switch (m_contentType) {
+    case ListImages:
+        if (d->m_urnSet.isEmpty()) {
+            d->deleteLiveQuery();
+            onInitialQueryFinished();
+            return;
+        }
+        d->m_queryRunning = true;
+        d->buildQueryListImages();
+        break;
+    case AllImages:
+        d->m_queryRunning = true;
+        d->buildQueryAllImages();
+        break;
+    default:
         return;
     }
-    d->m_queryRunning = true;
-    d->buildQuery(limit);
+
     connect(d->m_liveQuery, SIGNAL(initialQueryFinished()),
-            this, SLOT(onInitialQueryFinished()));
+            this, SLOT(onInitialQueryFinished()),
+            Qt::UniqueConnection);
     d->m_liveQuery->start();
 }
 
@@ -57,4 +70,14 @@ void TrackerContentProvider::setUrns(QSet<QString> &urnList)
     Q_D(TrackerContentProvider);
 
     d->m_urnSet = urnList;
+}
+
+void TrackerContentProvider::setContentType(ContentType t)
+{
+    Q_D(TrackerContentProvider);
+
+    if (m_contentType != t) {
+        m_contentType = t;
+        queryContent(d->m_limit);
+    }
 }

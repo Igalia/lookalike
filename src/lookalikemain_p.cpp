@@ -32,6 +32,7 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     m_galleryModel->setFaceRecognitionEnabled(true);
     QSparqlConnection *connection = m_galleryModel->sparqlConnection();
     m_trackerProvider = new TrackerContentProvider(connection, this);
+    m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
     m_galleryModel->addContentProvider(m_trackerProvider);
     m_faceDatabaseProvider = new FaceDatabaseProvider(connection, this);
     m_peopleListPage = new GalleryPeopleListPage(m_faceDatabaseProvider);
@@ -42,10 +43,10 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     m_gridPage->setStyleName("GalleryPage");
     m_fullScreenPage->setStyleName("GalleryPage");
 
-    MAction* unknownTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
-    unknownTabAction->setLocation(MAction::ToolBarLocation);
-    unknownTabAction->setCheckable(true);
-    unknownTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
+    MAction* allTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
+    allTabAction->setLocation(MAction::ToolBarLocation);
+    allTabAction->setCheckable(true);
+    allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
 
     MAction* peopleTabAction = new MAction("icon-m-toolbar-people-white", "", q);
     peopleTabAction->setLocation(MAction::ToolBarLocation);
@@ -53,7 +54,7 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     peopleTabAction->setToggledIconID("icon-m-toolbar-people-selected");
 
     QList<QAction*> actions;
-    actions.append(unknownTabAction);
+    actions.append(allTabAction);
     actions.append(peopleTabAction);
 
     MToolBar* toolbar = new MToolBar();
@@ -94,8 +95,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onDataChanged()));
     connect(m_confirmFaceAction, SIGNAL(triggered()),
             this, SLOT(onConfirmFaceActionTriggered()));
-    connect(unknownTabAction, SIGNAL(toggled(bool)),
-            this, SLOT(onUnknownTabActionToggled(bool)));
+    connect(allTabAction, SIGNAL(toggled(bool)),
+            this, SLOT(onAllTabActionToggled(bool)));
     connect(peopleTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onPeopleTabActionToggled(bool)));
 
@@ -289,10 +290,11 @@ void LookAlikeMainPrivate::onDataChanged()
     updateTrackerFilter();
 }
 
-void LookAlikeMainPrivate::onUnknownTabActionToggled(bool toggled)
+void LookAlikeMainPrivate::onAllTabActionToggled(bool toggled)
 {
     if (toggled) {
         m_personSelected = UNKNOWN_CONTACT;
+        m_trackerProvider->setContentType(TrackerContentProvider::AllImages);
         updateGrid();
         updateTrackerFilter();
         showPage(m_gridPage);
@@ -303,6 +305,7 @@ void LookAlikeMainPrivate::onPeopleTabActionToggled(bool toggled)
 {
     if (toggled) {
         m_personSelected = UNKNOWN_CONTACT;
+        m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
         showPage(m_peopleListPage);
     }
 }
