@@ -28,6 +28,15 @@ void TrackerContentProvider::queryContent(int limit)
         d->m_queryRunning = true;
         d->buildQueryAllImages();
         break;
+    case WithContact:
+        if (d->m_urnSet.isEmpty()) {
+            d->deleteLiveQuery();
+            onInitialQueryFinished();
+            return;
+        }
+        d->m_queryRunning = true;
+        d->buildQueryWithContact();
+        break;
     default:
         return;
     }
@@ -70,6 +79,13 @@ void TrackerContentProvider::setUrns(QSet<QString> &urnList)
     Q_D(TrackerContentProvider);
 
     d->m_urnSet = urnList;
+}
+
+void TrackerContentProvider::setContact(const QString &contact)
+{
+    Q_D(TrackerContentProvider);
+
+    d->m_contact = contact;
 }
 
 void TrackerContentProvider::setContentType(ContentType t)

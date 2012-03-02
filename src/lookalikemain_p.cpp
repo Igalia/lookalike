@@ -36,13 +36,13 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     m_galleryModel->addContentProvider(m_trackerProvider);
     m_faceDatabaseProvider = new FaceDatabaseProvider(connection, this);
     m_faceTrackerProvider = new FaceTrackerProvider(connection, this);
-    m_unconfirmedPeopleListPage = new GalleryPeopleListPage(m_faceDatabaseProvider);
     m_confirmedPeopleListPage = new GalleryPeopleListPage(m_faceTrackerProvider->model());
+    m_unconfirmedPeopleListPage = new GalleryPeopleListPage(m_faceDatabaseProvider);
     m_gridPage = new GalleryGridPage(*m_galleryModel);
     m_fullScreenPage = new GalleryFullScreenPage(*m_galleryModel);
 
-    m_unconfirmedPeopleListPage->setStyleName("GalleryPage");
     m_confirmedPeopleListPage->setStyleName("GalleryPage");
+    m_unconfirmedPeopleListPage->setStyleName("GalleryPage");
     m_gridPage->setStyleName("GalleryPage");
     m_fullScreenPage->setStyleName("GalleryPage");
 
@@ -51,20 +51,20 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     allTabAction->setCheckable(true);
     allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
 
-    MAction* unconfirmedPeopleTabAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
-    unconfirmedPeopleTabAction->setLocation(MAction::ToolBarLocation);
-    unconfirmedPeopleTabAction->setCheckable(true);
-    unconfirmedPeopleTabAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
-
     MAction* confirmedPeopleTabAction = new MAction("icon-m-toolbar-people-white", "", q);
     confirmedPeopleTabAction->setLocation(MAction::ToolBarLocation);
     confirmedPeopleTabAction->setCheckable(true);
     confirmedPeopleTabAction->setToggledIconID("icon-m-toolbar-people-selected");
 
+    MAction* unconfirmedPeopleTabAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
+    unconfirmedPeopleTabAction->setLocation(MAction::ToolBarLocation);
+    unconfirmedPeopleTabAction->setCheckable(true);
+    unconfirmedPeopleTabAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
+
     QList<QAction*> actions;
     actions.append(allTabAction);
-    actions.append(unconfirmedPeopleTabAction);
     actions.append(confirmedPeopleTabAction);
+    actions.append(unconfirmedPeopleTabAction);
 
     MToolBar* toolbar = new MToolBar();
     toolbar->setStyleName("MToolbarTabStyleInverted");
@@ -89,14 +89,16 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     fakeAction->setLocation(MAction::ToolBarLocation);
     fakeAction->setWidget(menuImage);
 
-    m_unconfirmedPeopleListPage->addAction(m_toolbarAction);
-    m_unconfirmedPeopleListPage->addAction(fakeAction);
-
     m_confirmedPeopleListPage->addAction(m_toolbarAction);
     m_confirmedPeopleListPage->addAction(fakeAction);
 
+    m_unconfirmedPeopleListPage->addAction(m_toolbarAction);
+    m_unconfirmedPeopleListPage->addAction(fakeAction);
+
+    connect(m_confirmedPeopleListPage, SIGNAL(personSelected(QString,QString)),
+            this, SLOT(onConfirmedPersonSelected(QString,QString)));
     connect(m_unconfirmedPeopleListPage, SIGNAL(personSelected(QString,QString)),
-            this, SLOT(onPersonSelected(QString,QString)));
+            this, SLOT(onUnconfirmedPersonSelected(QString,QString)));
     connect(m_gridPage, SIGNAL(multiSelectionDone(QList<QUrl>)),
             this, SLOT(onMultiSelectionDone(QList<QUrl>)));
     connect(m_gridPage, SIGNAL(itemSelected(QUrl)),
@@ -109,10 +111,10 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onConfirmFaceActionTriggered()));
     connect(allTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onAllTabActionToggled(bool)));
-    connect(unconfirmedPeopleTabAction, SIGNAL(toggled(bool)),
-            this, SLOT(onUnconfirmedPeopleTabActionToggled(bool)));
     connect(confirmedPeopleTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onConfirmedPeopleTabActionToggled(bool)));
+    connect(unconfirmedPeopleTabAction, SIGNAL(toggled(bool)),
+            this, SLOT(onUnconfirmedPeopleTabActionToggled(bool)));
 
     allTabAction->toggle();
 }
@@ -244,7 +246,7 @@ void LookAlikeMainPrivate::confirmFace(QUrl picture, QString& contact)
 
 }
 
-void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QString &displayName)
+void LookAlikeMainPrivate::onUnconfirmedPersonSelected(const QString &personId, const QString &displayName)
 {
     m_personSelected = personId;
     if (m_personSelected == UNKNOWN_CONTACT) {
@@ -253,6 +255,15 @@ void LookAlikeMainPrivate::onPersonSelected(const QString &personId, const QStri
         updateGrid(displayName, true);
     }
     m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
+    updateTrackerFilter();
+    showPage(m_gridPage, true);
+}
+
+void LookAlikeMainPrivate::onConfirmedPersonSelected(const QString &personId, const QString &displayName)
+{
+    updateGrid(displayName, false);
+    m_trackerProvider->setContact(personId);
+    m_trackerProvider->setContentType(TrackerContentProvider::WithContact);
     updateTrackerFilter();
     showPage(m_gridPage, true);
 }

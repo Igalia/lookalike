@@ -16,11 +16,13 @@ public:
     ~TrackerContentProviderPrivate();
     void buildQueryListImages();
     void buildQueryAllImages();
+    void buildQueryWithContact();
     void deleteLiveQuery();
 
     TrackerLiveQuery *m_liveQuery;
     bool m_queryRunning;
     QSet<QString> m_urnSet;
+    QString m_contact;
     int m_limit;
 
 private:

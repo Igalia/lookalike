@@ -13,6 +13,7 @@ public:
     enum ContentType {
         AllImages,
         ListImages,
+        WithContact,
     };
 
     TrackerContentProvider(QSparqlConnection *connection, QObject *parent = 0);
@@ -21,6 +22,7 @@ public:
     virtual void queryContent(int limit=-1);
     void setUrns(QSet<QString>& urnList);
     void setContentType(ContentType t);
+    void setContact(const QString& contact);
 
 signals:
     void dataChanged();

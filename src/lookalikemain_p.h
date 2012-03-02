@@ -54,7 +54,8 @@ public:
 
 public slots:
     void confirmFaces();
-    void onPersonSelected(const QString &personId, const QString &displayName);
+    void onUnconfirmedPersonSelected(const QString &personId, const QString &displayName);
+    void onConfirmedPersonSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
