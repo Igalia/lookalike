@@ -1,0 +1,109 @@
+CORE
+====
+
+* Search for pictures in the face recognition data base without
+  contacts assigned to the areas recognized as faces.
+* Search for the contacts that are proposed by the FR DB as a good
+  match for those areas.
+* Create a crawler that would go over the whole set of pictures in the
+  device to run the FR algorithm and have their metrics in the DB.
+* Create a crawler that would go over the whole set of pictures in the
+  device to run the FR algorithm and have their metrics in the DB.
+* Crawler to mark in Tracker the pictures over which has applied the
+  FR algorithm, even if no faces where recognized.
+* Make queries live, or act under events/changes on Tracker and the FR
+  DB.
+
+
+UI
+==
+
+Proposed Contacts Tab
+---------------------
+
+* 3rd tab in order.
+* Add a tab with the list of contacts "a la" Gallery, in which the
+  contacts show the number of pictures that the FR DB proposes to
+  display such contact.
+* Add the "Unknown" artificial contact to that tab which shows the
+  number of pictures that the FR DB suggest a face but not a matching
+  contact.
+* On clicking any of the contacts, show the grid with all the pictures
+  with areas which the FR DB suggests hold that contact.
+* Add an option menu to confirm the suggested contact on the pictures
+  in batch mode.
+* On selecting this new menu entry, show a selection grid "a la" batch
+  mode deletion with all the pictures preselected. On accept, confirm
+  on the selected items all the suggested areas to hold the suggested
+  contact.
+
+
+Confirmed Contacts Tab
+----------------------
+
+* 2nd tab in order.
+* Add a tab with the list of contacts "a la" Gallery, in which the
+  contacts show the number of pictures that are confirmed to display
+  such contact.
+* Add the "Everybody" artificial contact to that tab which shows the
+  number of pictures holding any contact.
+* On clicking any of the contacts, show the grid with all the pictures
+  with areas confirmed to belong to such contact.
+* Add an option menu to delete the confirmed areas holding the
+  suggested contact on the pictures in batch mode.
+* On selecting this new menu entry, show a selection grid "a la" batch
+  mode deletion with all the pictures preselected. On accept, delete
+  on the selected items all the confirmed areas belonging to such
+  contact.
+
+
+Gallery Tab
+-----------
+
+* 1st tab in order.
+* Add a tab with the whole set of pictures "a la" Gallery, but without
+  videos, as in any other of the tabs.
+
+
+Landscape Pictures Tab
+----------------------
+
+* 4th tab in order.
+* Add a tab with the whole set of pictures that doesn't hold any
+  confirmed nor suggested area displaying a contact.
+
+
+PACKAGING
+=========
+
+* Debianize.
+
+
+MEEGO-IZE
+=========
+
+* "Optize" (move as many files as possible to /opt)
+* Provide AEGIS credentials.
+* Provide icons following Harmattan's style guides.
+* Provide splash screens in portrait and landscape.
+* Enable application to be boosted.
+
+
+TESTING
+=======
+
+* Create Unit Tests.
+* Provide coverage.
+
+
+L10N
+====
+
+* Use logical IDs or C IDs ?
+
+
+DOCUMENTATION
+=============
+
+* Provide documentation building mechanism.
+
