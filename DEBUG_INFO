@@ -50,6 +50,16 @@ example, 'debug' and 'opt' are mutually exclusive. Hence, 'debug' has
 precedence over 'opt' and will cause 'opt' not to have any effect in
 case both are specified in the same compilation.
 
+How to compile with preloaded launching support
+-----------------------------------------------
+
+Look Alike uses the 'launcher' custom config variable of qmake.
+
+Compilation for preloaded launching is activated by default. Thus you
+can deactivate this option by just unsetting this variable:
+
+   qmake launcher=no && make
+
 How to package Look Alike
 -------------------------
 
@@ -90,6 +100,7 @@ These is the complete list of the correlated QMake and
 
    * 'debug' to set "debug=yes" in QMake.
    * 'noopt' to set "opt=no" in QMake.
+   * 'nolauncher' to set "launcher=no" in QMake.
 
 Notice that the 'DEB_BUILD_OPTIONS' have only to be set for the
 contrary value of the default one in the QMake correlated one.

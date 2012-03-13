@@ -18,4 +18,8 @@ ifeq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "opt=yes"
 endif
 
+ifneq (,$(filter nolauncher,$(DEB_BUILD_OPTIONS)))
+	DEB_QMAKE_ARGS += "launcher=no"
+endif
+
 binary: binary-indep

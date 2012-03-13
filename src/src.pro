@@ -28,6 +28,13 @@ contains( log, yes ) {
      DEFINES += LOOKALIKE_LOGGING
 }
 
+contains( launcher, no ) {
+     message( "Look Alike is being built without launcher support ..." )
+} else {
+     # Add config flag for applauncherd (mbooster)
+     CONFIG += meegotouch-boostable
+}
+
 # Avoid automatic casts from QString to QUrl. Dangerous!!!
 DEFINES += QT_NO_URL_CAST_FROM_STRING
 

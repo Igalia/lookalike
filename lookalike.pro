@@ -9,6 +9,13 @@ TEMPLATE = subdirs
 CONFIG += ordered
 QMAKE_DISTCLEAN += Makefile*
 
+contains( launcher, no ) {
+     INVOKERTYPEOPTION = "e"
+} else {
+#     INVOKERTYPEOPTION = "m"
+     INVOKERTYPEOPTION = "e"
+}
+
 QMAKE_SUBSTITUTES += \
      desktopfiles/$${TARGET}.desktop.in \
      debian/lookalike.install.in
