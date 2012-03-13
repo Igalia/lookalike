@@ -127,5 +127,19 @@ Refer to the FreeDesktop standards:
 
    http://standards.freedesktop.org/desktop-entry-spec/latest/
 
+Integration with the AEGIS Security Framework
+---------------------------------------------
+
+Look Alike integrates with the AEGIS Security Framework through the
+file:
+
+   debian/lookalike.aegis
+
+in which there are listed the requeste tokens hold by Look Alike.
+
+Refer to the AEGIS documentation for more information:
+
+   http://harmattan-dev.nokia.com/docs/library/html/guide/html/Developer_Library_Developing_for_Harmattan_Harmattan_security_Security_guide_Aegis_manifest_syntax.html
+
 
  -- Andres Gomez <agomez@igalia.com>  Tue, 23 Feb 2012 19:32:00 +0200

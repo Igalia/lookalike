@@ -22,4 +22,8 @@ ifneq (,$(filter nolauncher,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "launcher=no"
 endif
 
-binary: binary-indep
+binary-aegisgen: binary-arch
+	aegis-deb-add -control debian/lookalike/DEBIAN/control .. debian/lookalike.aegis=_aegis
+
+binary: binary-indep binary-aegisgen
+.PHONY: binary-aegisgen
