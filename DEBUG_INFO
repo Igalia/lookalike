@@ -1,0 +1,61 @@
+How to compile Look Alike
+-------------------------
+
+We are using the standard Qt compiling engine, QMake. The way to
+compile Look Alike is:
+
+   qmake && make
+
+How to compile using debugging information
+------------------------------------------
+
+Look Alike uses the standard 'debug' config variable of qmake, see
+
+   http://developer.qt.nokia.com/doc/qt-4.8/qmake-project-files.html
+
+Thus you can activate the debugging options by just setting this
+variable:
+
+   qmake debug=yes && make
+
+For making this process easier, it has been added a custom script in
+the root directory of the project:
+
+   ./build.sh && make
+
+How to use the debugger
+-----------------------
+
+We use GDB to debug Look Alike.
+Refer to the GDB documentation for more information:
+
+   https://www.gnu.org/software/gdb/documentation/
+
+and:
+
+   http://harmattan-dev.nokia.com/docs/library/html/guide/html/Developer_Library_Developing_for_Harmattan_Developer_tools_Debugging_tools_Using_GDB.html
+
+How to compile with optimization flags
+--------------------------------------
+
+Look Alike uses the 'opt' custom config variable of qmake.
+
+Optimization is activated by default. Thus you can deactivate this
+option by just unsetting this variable:
+
+   qmake opt=no && make
+
+NOTE: Some of the configuration variables are mutually exclusive. For
+example, 'debug' and 'opt' are mutually exclusive. Hence, 'debug' has
+precedence over 'opt' and will cause 'opt' not to have any effect in
+case both are specified in the same compilation.
+
+How to run Look Alike from the command-line
+-------------------------------------------
+
+This is how to launch Look Alike from the command line:
+
+   lookalike
+
+
+ -- Andres Gomez <agomez@igalia.com>  Tue, 23 Feb 2012 19:32:00 +0200
