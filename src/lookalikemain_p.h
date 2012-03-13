@@ -71,6 +71,7 @@ public:
     FaceTrackerProvider *m_faceTrackerProvider;
     QString m_personSelected;
     MAction* m_confirmFaceAction;
+    MAction* m_aboutAction;
     MWidgetAction* m_toolbarAction;
     QList<QUrl> m_facesToConfirm;
     MDialog* m_progressDialog;
@@ -81,6 +82,7 @@ public slots:
     void onProposedContactPersonSelected(const QString &personId, const QString &displayName);
     void onConfirmedContactSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
+    void onAboutActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
     void onDataChanged();
@@ -88,6 +90,8 @@ public slots:
     void onProposedContactTabActionToggled(bool toggled);
     void onConfirmedContactTabActionToggled(bool toggled);
     void onProgressDialogRejected();
+    void onGridPageAppeared();
+    void onFullscreenPageAppeared();
 
 private:
     LookAlikeMain *q_ptr;
