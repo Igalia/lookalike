@@ -13,6 +13,12 @@ M_EXPORT int main(int argc, char *argv[])
     LookAlikeMain *main = new LookAlikeMain();
     window->show();
 
+    // Hide the status bar
+    Qt::WindowStates state = window->windowState();
+    window->setWindowState(state | Qt::WindowFullScreen);
+    // Disable rounded corners
+    window->setRoundedCornersEnabled(false);
+
     int result = application->exec();
 
     delete main;
