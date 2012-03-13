@@ -504,11 +504,16 @@ That's all there is to it!
 
 Files:
   art/icon-l-lookalike.png
+  art/icon-m-lookalike-everybody-main-view.png
   art/icon-m-lookalike-main-view.png
+  art/icon-m-toolbar-known-people-white.png
+  art/icon-m-toolbar-unknown-people-white.png
   art/lookalike-playground.svg
+  art/lookalike-splash-landscape.png
+  art/lookalike-splash-portrait.png
   debian/control
-Are derived work from: avatar-default.svg files from the "ubuntu-mono"
-package.
+Are derived work from: avatar-default.svg and system-restart-panel.svg
+files from the "ubuntu-mono" package.
 Copyright: 2012 Andres Gomez <agomez@igalia.com>.
 License: Creative Commons Attribution Share-alike license v3.0 or any
 later version.
