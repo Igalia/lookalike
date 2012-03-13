@@ -17,6 +17,10 @@ include($$[QT_INSTALL_DATA]/mkspecs/features/meegotouch_defines.prf)
 meegotouch.files = conf/$${TARGET}.css
 meegotouch.path = $${M_THEME_DIR}/base/meegotouch/$${TARGET}/style
 
+# Service files
+service.files = dbus/com.igalia.$${TARGET}.service
+service.path = $$DATADIR/dbus-1/services/
+
 # Desktop files
 desktop.files = desktopfiles/$${TARGET}.desktop
 desktop.path = $$DATADIR/applications
@@ -32,4 +36,4 @@ splash.files += art/$${TARGET}-splash-portrait.png
 script.files = $${TARGET}
 script.path = $$BINDIR
 
-INSTALLS += meegotouch script desktop icon64 splash
+INSTALLS += meegotouch service script desktop icon64 splash
