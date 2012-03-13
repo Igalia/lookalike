@@ -42,6 +42,7 @@ SOURCES +=                      \
     trackercontentprovider_p.cpp
 
 HEADERS +=                      \
+    enforce.h                   \
     facedatabaseprovider.h      \
     facetrackerprovider.h       \
     lookalikemain.h             \

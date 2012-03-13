@@ -1,6 +1,7 @@
 #include "facedatabaseprovider.h"
 #include "gallerypeoplelistpage.h"
 #include "nullthumbnailer.h"
+#include "enforce.h"
 #include <QSparqlConnection>
 #include <QSparqlQuery>
 #include <QSparqlResult>
@@ -15,8 +16,8 @@ FaceDatabaseProvider::FaceDatabaseProvider(QSparqlConnection *connection, QObjec
     NullThumbnailer thumbnailer;
     m_faceDatabase = new XQFaceDatabase(thumbnailer, databaseName);
     update();
-    connect(m_faceDatabase, SIGNAL(faceUpdated(XQFaceRegion,QString)),
-            this, SLOT(update()));
+    ENFORCE(connect(m_faceDatabase, SIGNAL(faceUpdated(XQFaceRegion,QString)),
+                    this, SLOT(update())));
     connect(m_faceDatabase, SIGNAL(groupMerged(QString,QString)),
             this, SLOT(update()));
 }
