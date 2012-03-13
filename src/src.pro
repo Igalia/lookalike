@@ -1,9 +1,35 @@
-TEMPLATE    = app
-TARGET      = lookalike
+ ========================= #
+# Compilation configuration #
+# ========================= #
 
-contains(debug, yes) {
-    CONFIG += debug warn_on
+include(../common.pri)
+
+TEMPLATE    = app
+
+contains( debug, yes ) {
+     message( "Configuring for debug build ..." )
+     CONFIG += debug warn_on
+     contains( opt, yes ) {
+          message( "Debugging built is incompatible with optimized built ..." )
+     }
+} else {
+     message( "Configuring for release build ..." )
+     CONFIG += release warn_on
+     DEFINES += QT_NO_DEBUG_OUTPUT
+#     DEFINES += QT_NO_WARNING_OUTPUT
+     contains( opt, yes ) {
+          message( "Configuring for optimized build ..." )
+          #More CXX flags to be added here, if needed (see Qt doc).
+     }
 }
+
+contains( log, yes ) {
+     message( "Look Alike is being built with logging support ..." )
+     DEFINES += LOOKALIKE_LOGGING
+}
+
+# Avoid automatic casts from QString to QUrl. Dangerous!!!
+DEFINES += QT_NO_URL_CAST_FROM_STRING
 
 # Treat warnings as errors (Do not remove this!)
 # Hide all the library symbols by default (use FACEAUTORECOGNIZER_EXPORT to export them)
@@ -14,16 +40,16 @@ QMAKE_CXXFLAGS += -Werror
 QMAKE_CXXFLAGS_DEBUG += -O0 -ggdb
 #QMAKE_CXXFLAGS_DEBUG +=  -Wunreachable-code
 QMAKE_CXXFLAGS_RELEASE += -O3
-QMAKE_DISTCLEAN += *.gcda *.gcno *.gcov *.log  coverage *.o moc_* Makefile* doc/html/*
+QMAKE_DISTCLEAN += *.o moc_* Makefile*
 
-target.path = /usr/bin
+target.path = $$PREFIX/bin
 INSTALLS += target
 
 OBJECTS_DIR = build/
 MOC_DIR = build/
 
 CONFIG +=                   \
-   faceplatform             \
+    faceplatform            \
     gallerycore             \
     link_pkgconfig          \
     meegotouch              \
@@ -60,23 +86,3 @@ message( "C++ Debug flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_DEBUG )
 message( "C++ Release flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE  )
 message( "Linker flags:" $$QMAKE_LFLAGS )
 message( "LIBS flags:" $$QMAKE_LIBS )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
