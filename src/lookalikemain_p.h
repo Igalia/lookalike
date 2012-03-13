@@ -39,8 +39,8 @@ public:
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;
-    GalleryPeopleListPage *m_unconfirmedPeopleListPage;
-    GalleryPeopleListPage *m_confirmedPeopleListPage;
+    GalleryPeopleListPage *m_proposedContactsListPage;
+    GalleryPeopleListPage *m_confirmedContactsListPage;
     GalleryGridPage *m_gridPage;
     GalleryFullScreenPage *m_fullScreenPage;
     FaceDatabaseProvider *m_faceDatabaseProvider;
@@ -54,15 +54,15 @@ public:
 
 public slots:
     void confirmFaces();
-    void onUnconfirmedPersonSelected(const QString &personId, const QString &displayName);
-    void onConfirmedPersonSelected(const QString &personId, const QString &displayName);
+    void onProposedContactPersonSelected(const QString &personId, const QString &displayName);
+    void onConfirmedContactSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
     void onDataChanged();
     void onAllTabActionToggled(bool toggled);
-    void onUnconfirmedPeopleTabActionToggled(bool toggled);
-    void onConfirmedPeopleTabActionToggled(bool toggled);
+    void onProposedContactTabActionToggled(bool toggled);
+    void onConfirmedContactTabActionToggled(bool toggled);
     void onProgressDialogRejected();
 
 private:
