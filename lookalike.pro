@@ -7,13 +7,20 @@ include(common.pri)
 SUBDIRS = src
 TEMPLATE = subdirs
 CONFIG += ordered
-QMAKE_DISTCLEAN += Makefile*
+QMAKE_DISTCLEAN += Makefile* doc/html/*
 
 contains( launcher, no ) {
      INVOKERTYPEOPTION = "e"
 } else {
 #     INVOKERTYPEOPTION = "m"
      INVOKERTYPEOPTION = "e"
+}
+
+contains( doc, no ) {
+     message( "Not building the documentation ..." )
+} else {
+     # Make doc Makefile target
+     include(doc/doc.pri)
 }
 
 QMAKE_SUBSTITUTES += \

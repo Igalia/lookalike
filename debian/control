@@ -135,3 +135,9 @@ Section: debug
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, lookalike (=${binary:Version})
 Description: Debug symbols for the Look Alike application.
+
+Package: lookalike-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: API documentation for Look Alike
