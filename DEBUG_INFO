@@ -57,5 +57,20 @@ This is how to launch Look Alike from the command line:
 
    lookalike
 
+Integration with the Desktop
+----------------------------
+
+Look Alike provides a launcher for the Destkop (Harmattan's Home
+Screen) in the file:
+
+   desktopfiles/lookalike.desktop
+
+Therefore, if the user performs an action over this Desktop launcher,
+Look Alike will be invoked.
+
+Refer to the FreeDesktop standards:
+
+   http://standards.freedesktop.org/desktop-entry-spec/latest/
+
 
  -- Andres Gomez <agomez@igalia.com>  Tue, 23 Feb 2012 19:32:00 +0200
