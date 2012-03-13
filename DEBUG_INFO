@@ -60,6 +60,18 @@ can deactivate this option by just unsetting this variable:
 
    qmake launcher=no && make
 
+How to generate the engineering translation
+-------------------------------------------
+
+Look Alike comes with an engineering translation and uses the
+'translations' custom config variable of qmake for tuning its
+generation.
+
+The engineering translation generation is activated by default. Thus
+you can deactivate this option by just unsetting this variable:
+
+   qmake translations=no && make
+
 How to generate the API documentation
 -------------------------------------
 
@@ -82,6 +94,7 @@ This will generate the following packages:
 
    lookalike_<version>_<arch>.deb
    lookalike-dbg_<version>_<arch>.deb
+   lookalike-l10n-engineering-english_<version>_<arch>.deb
 
 To install them, run 'dpkg -i *.deb'
 
@@ -111,6 +124,7 @@ These is the complete list of the correlated QMake and
    * 'debug' to set "debug=yes" in QMake.
    * 'noopt' to set "opt=no" in QMake.
    * 'nolauncher' to set "launcher=no" in QMake.
+   * 'notranslations' to set "translations=no" in QMake.
    * 'nodoc' to not generate the documentation.
 
 Notice that the 'DEB_BUILD_OPTIONS' have only to be set for the

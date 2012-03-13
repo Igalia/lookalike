@@ -16,6 +16,12 @@ contains( launcher, no ) {
      INVOKERTYPEOPTION = "e"
 }
 
+contains( translations, no ) {
+     message( "Not building the translations ..." )
+} else {
+     SUBDIRS += translations
+}
+
 contains( doc, no ) {
      message( "Not building the documentation ..." )
 } else {
@@ -25,7 +31,8 @@ contains( doc, no ) {
 
 QMAKE_SUBSTITUTES += \
      desktopfiles/$${TARGET}.desktop.in \
-     debian/lookalike.install.in
+     debian/lookalike.install.in \
+     debian/lookalike-l10n-engineering-english.install.in
 
 # Style
 include($$[QT_INSTALL_DATA]/mkspecs/features/meegotouch_defines.prf)

@@ -141,3 +141,10 @@ Section: doc
 Architecture: all
 Depends: ${misc:Depends}
 Description: API documentation for Look Alike
+
+Package: lookalike-l10n-engineering-english
+Section: devel
+Architecture: any
+Depends: ${misc:Depends}
+Enhances: lookalike
+Description: Engineering English translations for Look Alike
