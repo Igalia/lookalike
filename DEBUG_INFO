@@ -50,6 +50,50 @@ example, 'debug' and 'opt' are mutually exclusive. Hence, 'debug' has
 precedence over 'opt' and will cause 'opt' not to have any effect in
 case both are specified in the same compilation.
 
+How to package Look Alike
+-------------------------
+
+We are using the standard Debian packaging tools, so the way to create
+installable packages of Look Alike is:
+
+   dpkg-buildpackage -rfakeroot -b -us -uc
+
+This will generate the following packages:
+
+   lookalike_<version>_<arch>.deb
+   lookalike-dbg_<version>_<arch>.deb
+
+To install them, run 'dpkg -i *.deb'
+
+How to package passing the different compilation options
+--------------------------------------------------------
+
+QMake compilation options have been integrated into the Debian
+packaging, thus you can activate or deactivate them by just setting
+the environment variable 'DEB_BUILD_OPTIONS'.
+
+For example, for packaging with the debugging compilation options we
+would need to set this variable as following:
+
+   export DEB_BUILD_OPTIONS="debug nostrip"
+
+and then compiling normally:
+
+   dpkg-buildpackage -rfakeroot -b -us -uc
+
+Notice that the 'nostrip' option has to be additionally passed in this
+case in order to prevent the debian tools from removing the symbols on
+the generated binaries.
+
+These is the complete list of the correlated QMake and
+'DEB_BUILD_OPTIONS' configuration options:
+
+   * 'debug' to set "debug=yes" in QMake.
+   * 'noopt' to set "opt=no" in QMake.
+
+Notice that the 'DEB_BUILD_OPTIONS' have only to be set for the
+contrary value of the default one in the QMake correlated one.
+
 How to run Look Alike from the command-line
 -------------------------------------------
 

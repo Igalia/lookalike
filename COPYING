@@ -506,6 +506,7 @@ Files:
   art/icon-l-lookalike-main-view.png
   art/icon-l-lookalike.png
   art/lookalike-playground.svg
+  debian/control
 Are derived work from: avatar-default.svg files from the "ubuntu-mono"
 package.
 Copyright: 2012 Andres Gomez <agomez@igalia.com>.

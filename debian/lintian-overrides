@@ -1,0 +1,5 @@
+# We are not shipping a man page
+lookalike binary: binary-without-manpage
+
+# The package contains a shared library, whose name does not match the package name
+lookalike binary: package-name-doesnt-match-sonames

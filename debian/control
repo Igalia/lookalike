@@ -1,0 +1,137 @@
+Source: lookalike
+Section: user/graphics
+Priority: extra
+Maintainer: Andres Gomez <agomez@igalia.com>
+Build-Depends: libgallerycore-dev (>= 1.111026.3),
+               debhelper (>= 7.0.50),
+               cdbs (>= 0.4.87),
+               libqt4-dev,
+               libmeegotouch-dev (>= 0.20.37),
+               libquillimagefilter-dev (>= 1.111103.0),
+               libqtsparql-dev (>= 0.0.17),
+               libqtsparql-tracker-live-dev (>= 0.0.4),
+               libqmsystem2-dev,
+               doxygen,
+               maemo-meegotouch-interfaces-dev (>= 0.3.21),
+               libmcontentwidgets-dev (>= 0.12.4),
+               libqtm-contacts-dev,
+               libqtm-systeminfo-dev,
+               libcontentaction-dev,
+               libsp-timestamp-dev,
+               libmemnotifyqt1-dev,
+               libfacerecognition-dev,
+               libduicontrolpanel-dev,
+               graphviz,
+               aegis-builder
+Standards-Version: 3.9.1
+Homepage: https://www.igalia.com
+
+Package: lookalike
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, tracker (>= 0.10.29)
+Description: Harmattan Lookalike application.
+XB-Maemo-Icon-26:
+ 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
+ Z1HMWiUjOq3vbAa/UC7rocDsNRJqrqA48Y6D8yfKbw7xuihUnZ5LJlO3FIov
+ evHON+ZvuC5RV7/l2IEuycyVPgZRMZNi5nIJFTOnuKObIFLtHO3bXKTaSxMZ
+ CsuYfXWd293VufI/9q/fWeidklc/fXPhv/yoIhZf/3Hr6YLaFJtBMeN6dtEQ
+ NxKpdo6T2z2kT44mklKCS1umIZVObvjl3n96pFgeY97e9t1lT+6CpyztONw9
+ SKIaA2bfKKOq+eIkbiR62ziO/dGB1X/AnVKCxrkJgNm7f77jB9eWSjvm7W3Z
+ TGp1JFrx9qXzpy3tOHIOlVc6mH4tBZURuFM8VaiYDcy7S8KpXRznP5TROKcG
+ pm3szmZSq8dKW/YFjN9Z8c//2vKF+nU5fp5ks9lJV/pCRCQSQZhWitbfdj71
+ /NaHHignzbiuAL3/zsfuarq69t9YxJN6eno+NRpIKUV1dTW8LHOPHzj7909v
+ fPSlctOO+xLary7+fqS5pbF1xoJYc8ZIwTCMi5ZISil0XUdUr8DJfem2ttaO
+ ll/t+fG4mteEr0G+56bH/nHmwtiGmtl6LJfLlTzre6FBVVVEo1GEw2GcO2ak
+ 2/em1z/3h0efmUhek76I+/67H14TDkWeSlwS/RtFJzSTySCTyVxwWkkpRTQa
+ RTQahW0I3n00837OzK57+sXH/zSZfH29Cv7e2x9dXzMz9r3aZj0B2SO2bWMg
+ WJY15oU5foExBlVVB++iURQFcJg422Z0n2tP//TZ1x4reqXneBHIf0Zw/bQv
+ sgXLr/h2SFdu16LKleEKtTYSVxUpRIhlWbBtG67rQohPLqQY+HvkMwCDNxhR
+ Sgf/HvlMkiQoigJVVeGaQmSTlp1LWWfzGftD07Bf27ft4AvbT//G9y8YCIHF
+ cM9tDy+WFelvQxHlOjXK6plCQkyiCpOoRCXCJIUyJlPKZEokmRDav8jFXQ7X
+ EcJzuPAczl2be9wVnudy13O57dnCtDJep5m1dzq2+/Jzbzy+Z6pk+j+6i4oY
+ FG6MKgAAAABJRU5ErkJggg==
+
+Package: lookalike-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, lookalike (=${binary:Version})
+Description: Debug symbols for the Look Alike application.

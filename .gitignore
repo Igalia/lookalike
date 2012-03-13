@@ -4,3 +4,4 @@ gen_*
 Makefile*
 *.so
 *.so.*
+*.debhelper

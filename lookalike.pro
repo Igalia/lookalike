@@ -10,7 +10,8 @@ CONFIG += ordered
 QMAKE_DISTCLEAN += Makefile*
 
 QMAKE_SUBSTITUTES += \
-     desktopfiles/$${TARGET}.desktop.in
+     desktopfiles/$${TARGET}.desktop.in \
+     debian/lookalike.install.in
 
 # Style
 include($$[QT_INSTALL_DATA]/mkspecs/features/meegotouch_defines.prf)

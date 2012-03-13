@@ -1,0 +1,6 @@
+$$BINDIR/$$TARGET
+$$DATADIR/themes/base/meegotouch/$$TARGET/style
+$$DATADIR/applications/"$$TARGET"*.desktop
+$$DATADIR/dbus-1/services/
+$$DATADIR/icons/hicolor/64x64/apps
+$$DATADIR/$$TARGET
