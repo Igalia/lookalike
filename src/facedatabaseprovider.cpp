@@ -132,7 +132,7 @@ void FaceDatabaseProvider::update()
         QList<QStandardItem *> row;
         row << new QStandardItem("Unknown");
         row << new QStandardItem(QString().setNum(m_suspectedRegions.value(UNKNOWN_CONTACT).count()));
-        row << new QStandardItem("/usr/share/icons/hicolor/64x64/apps/icon-l-lookalike.png");
+        row << new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-main-view.png");
         row << new QStandardItem(UNKNOWN_CONTACT);
         insertRow(0, row);
     }

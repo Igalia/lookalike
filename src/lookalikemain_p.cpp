@@ -76,17 +76,19 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     MAction* allTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
     allTabAction->setLocation(MAction::ToolBarLocation);
     allTabAction->setCheckable(true);
-    allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
+    //allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
 
-    MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-people-white", "", q);
+    //MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-people-white", "", q);
+    MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-known-people-white", "", q);
     confirmedContactsTabAction->setLocation(MAction::ToolBarLocation);
     confirmedContactsTabAction->setCheckable(true);
-    confirmedContactsTabAction->setToggledIconID("icon-m-toolbar-people-selected");
+    //confirmedContactsTabAction->setToggledIconID("icon-m-toolbar-people-selected");
 
-    MAction* proposedContactsAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
+    //MAction* proposedContactsAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
+    MAction* proposedContactsAction = new MAction("icon-m-toolbar-unknown-people-white", "", q);
     proposedContactsAction->setLocation(MAction::ToolBarLocation);
     proposedContactsAction->setCheckable(true);
-    proposedContactsAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
+    //proposedContactsAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
 
     QList<QAction*> actions;
     actions.append(allTabAction);
