@@ -37,11 +37,14 @@
 #include <MApplicationWindow>
 #include <MDialog>
 #include <MImageWidget>
+#include <MLabel>
+#include <MMessageBox>
 #include <MProgressIndicator>
 #include <MSceneManager>
 #include <MToolBar>
 #include <MWidgetAction>
 #include <QAbstractItemModel>
+#include <QGraphicsLinearLayout>
 #include <QSparqlConnection>
 #include <QTimer>
 #include <QuillMetadata>
@@ -73,17 +76,19 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     MAction* allTabAction = new MAction("icon-m-toolbar-all-content-white", "", q);
     allTabAction->setLocation(MAction::ToolBarLocation);
     allTabAction->setCheckable(true);
-    allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
+    //allTabAction->setToggledIconID("icon-m-toolbar-all-content-selected");
 
-    MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-people-white", "", q);
+    //MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-people-white", "", q);
+    MAction* confirmedContactsTabAction = new MAction("icon-m-toolbar-known-people-white", "", q);
     confirmedContactsTabAction->setLocation(MAction::ToolBarLocation);
     confirmedContactsTabAction->setCheckable(true);
-    confirmedContactsTabAction->setToggledIconID("icon-m-toolbar-people-selected");
+    //confirmedContactsTabAction->setToggledIconID("icon-m-toolbar-people-selected");
 
-    MAction* proposedContactsAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
+    //MAction* proposedContactsAction = new MAction("icon-m-toolbar-addressbook-white", "", q);
+    MAction* proposedContactsAction = new MAction("icon-m-toolbar-unknown-people-white", "", q);
     proposedContactsAction->setLocation(MAction::ToolBarLocation);
     proposedContactsAction->setCheckable(true);
-    proposedContactsAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
+    //proposedContactsAction->setToggledIconID("icon-m-toolbar-addressbook-selected");
 
     QList<QAction*> actions;
     actions.append(allTabAction);
@@ -102,6 +107,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
 
     m_confirmFaceAction = new MAction("Confirm faces", q);
     m_confirmFaceAction->setLocation(MAction::ApplicationMenuLocation);
+    m_aboutAction = new MAction("About", q);
+    m_aboutAction->setLocation(MAction::ApplicationMenuLocation);
 
     const QPixmap *pixmap = MTheme::pixmap("icon-m-toolbar-view-menu-dimmed-white");
     MImageWidget *menuImage = new MImageWidget();
@@ -133,12 +140,18 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onDataChanged()));
     connect(m_confirmFaceAction, SIGNAL(triggered()),
             this, SLOT(onConfirmFaceActionTriggered()));
+    connect(m_aboutAction, SIGNAL(triggered()),
+            this, SLOT(onAboutActionTriggered()));
     connect(allTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onAllTabActionToggled(bool)));
     connect(confirmedContactsTabAction, SIGNAL(toggled(bool)),
             this, SLOT(onConfirmedContactTabActionToggled(bool)));
     connect(proposedContactsAction, SIGNAL(toggled(bool)),
             this, SLOT(onProposedContactTabActionToggled(bool)));
+    connect(m_gridPage, SIGNAL(appeared()),
+            this, SLOT(onGridPageAppeared()));
+    connect(m_fullScreenPage, SIGNAL(appeared()),
+            this, SLOT(onFullscreenPageAppeared()));
 
     allTabAction->toggle();
 }
@@ -149,6 +162,7 @@ LookAlikeMainPrivate::~LookAlikeMainPrivate()
     delete m_proposedContactsListPage;
     delete m_confirmedContactsListPage;
     delete m_gridPage;
+    delete m_aboutAction;
 }
 
 QString LookAlikeMainPrivate::urnFromUrl(QUrl url)
@@ -297,6 +311,56 @@ void LookAlikeMainPrivate::onConfirmFaceActionTriggered()
     m_gridPage->startMultiSelection("Confirm");
 }
 
+void LookAlikeMainPrivate::onAboutActionTriggered()
+{
+    static MApplicationPage *aboutPage = 0;
+    if (aboutPage == 0) {
+        const QString title = "LookALike";
+        const QString version = "0.0.1";
+        const QString copyright = "Copyright (c) 2012 Igalia S.L.";
+        const QString contact = "<a href=\"mailto:agomez@igalia.com\">agomez@igalia.com</a> | "
+                                "<a href=\"http://www.igalia.com\">www.igalia.com</a>";
+        const QString license = "This program is free software: you can redistribute it and/or modify "
+                                "it under the terms of the GNU General Public License as published by "
+                                "the Free Software Foundation, either version 3 of the License, or "
+                                "(at your option) any later version.<br /><br />"
+                                "This package is distributed in the hope that it will be useful, "
+                                "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+                                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+                                "GNU General Public License for more details.<br /><br />"
+                                "You should have received a copy of the GNU General Public License "
+                                "along with this program. If not, see "
+                                "<a href=\"http://www.gnu.org/licenses\">http://www.gnu.org/licenses</a><br /><br />";
+
+        aboutPage = new MApplicationPage();
+        aboutPage->setStyleName("GalleryPage");
+        aboutPage->setTitle(title);
+        QGraphicsLinearLayout *layout = new QGraphicsLinearLayout(Qt::Vertical, aboutPage->centralWidget());
+        MImageWidget *aboutIcon = new MImageWidget();
+        aboutIcon->setImage(QImage("/usr/share/icons/hicolor/64x64/apps/icon-l-lookalike.png"));
+        MLabel *aboutTitle = new MLabel(title + " " + version);
+        aboutTitle->setAlignment(Qt::AlignCenter);
+        aboutTitle->setColor("white");
+        MLabel *aboutCopyright = new MLabel(copyright);
+        aboutCopyright->setAlignment(Qt::AlignCenter);
+        aboutCopyright->setColor("white");
+        MLabel *aboutContact = new MLabel(contact);
+        aboutContact->setAlignment(Qt::AlignCenter);
+        aboutContact->setColor("white");
+        MLabel *aboutLicense = new MLabel(license);
+        aboutLicense->setAlignment(Qt::AlignJustify);
+        aboutLicense->setWordWrap(true);
+        aboutLicense->setFont(QFont("Nokia Pure Text Light"));
+        aboutLicense->setColor("white");
+        layout->addItem(aboutIcon);
+        layout->addItem(aboutTitle);
+        layout->addItem(aboutCopyright);
+        layout->addItem(aboutContact);
+        layout->addItem(aboutLicense);
+    }
+    showPage(aboutPage, true);
+}
+
 void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
 {
     m_facesToConfirm = urlList;
@@ -373,4 +437,14 @@ void LookAlikeMainPrivate::onConfirmedContactTabActionToggled(bool toggled)
 void LookAlikeMainPrivate::onProgressDialogRejected()
 {
     m_facesToConfirm.clear();
+}
+
+void LookAlikeMainPrivate::onGridPageAppeared()
+{
+    m_gridPage->addAction(m_aboutAction);
+}
+
+void LookAlikeMainPrivate::onFullscreenPageAppeared()
+{
+    m_fullScreenPage->addAction(m_aboutAction);
 }

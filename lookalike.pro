@@ -39,6 +39,11 @@ include($$[QT_INSTALL_DATA]/mkspecs/features/meegotouch_defines.prf)
 meegotouch.files = conf/$${TARGET}.css
 meegotouch.path = $${M_THEME_DIR}/base/meegotouch/$${TARGET}/style
 
+# Icons
+theme.files = art/icon-m-*.png
+theme.path = $${M_THEME_DIR}/base/meegotouch/$${TARGET}/icons
+theme.CONFIG += no_check_exist
+
 # Service files
 service.files = dbus/com.igalia.$${TARGET}.service
 service.path = $$DATADIR/dbus-1/services/
@@ -58,4 +63,4 @@ splash.files += art/$${TARGET}-splash-portrait.png
 script.files = $${TARGET}
 script.path = $$BINDIR
 
-INSTALLS += meegotouch service script desktop icon64 splash
+INSTALLS += meegotouch service script desktop icon64 splash theme
