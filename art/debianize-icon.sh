@@ -1,3 +1,3 @@
 #!/bin/bash
 
-uuencode -m icon-l-lookalike.png icon-l-lookalike.png | sed -e s,^,\ ,  > icon-l-lookalike.base64
+uuencode -m icon-m-lookalike.png icon-m-lookalike.png | sed -e s,^,\ ,  > icon-m-lookalike.base64
