@@ -49,6 +49,7 @@ public slots:
 
 private:
     QStringList resolveContact(QString &contactUrn);
+    int countImages(QList<XQFaceRegion> regions);
     void addRegion(QString &faceId, XQFaceRegion &region);
     void moveRegions(QString &fromFaceId, QString &toFaceId);
 

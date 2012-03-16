@@ -83,6 +83,36 @@ QStringList FaceDatabaseProvider::resolveContact(QString &contactUrn)
     }
 }
 
+int FaceDatabaseProvider::countImages(QList<XQFaceRegion> regions)
+{
+    QString sparqlSentence("SELECT\n"
+                           "  COUNT(?urn)\n"
+                           "WHERE {\n"
+                           "  ?urn rdf:type nfo:Visual ;\n"
+                           "       tracker:available \"true\"^^xsd:boolean .\n"
+                           "  FILTER(?urn IN (%1) ).\n"
+                           "}\n");
+    QString urnList;
+    QListIterator<XQFaceRegion> iter(regions);
+    while (iter.hasNext()) {
+        urnList += "<" + iter.next().sourceId() + ">";
+        if (iter.hasNext()) {
+            urnList += " , ";
+        }
+    }
+    QSparqlQuery query = QSparqlQuery(sparqlSentence.arg(urnList));
+
+    int count = 0;
+    QSparqlResult *result = m_sparqlConnection->syncExec(query);
+    if (!result->hasError() && result->first()) {
+        count = result->value(0).toInt();
+    }
+
+    delete result;
+
+    return count;
+}
+
 void FaceDatabaseProvider::update()
 {
     QAbstractItemModel *faceGroupsModel = m_faceDatabase->faceGroups(XQFaceDatabase::UnnamedGroup);
@@ -120,7 +150,7 @@ void FaceDatabaseProvider::update()
         } else {
             QList<QStandardItem *> row;
             row << new QStandardItem(resolvedValues[0]);
-            row << new QStandardItem(QString().setNum(m_suspectedRegions.value(key).count()));
+            row << new QStandardItem(QString().setNum(countImages(m_suspectedRegions.value(key))));
             row << new QStandardItem(resolvedValues[1]);
             row << new QStandardItem(key);
             appendRow(row);
@@ -131,7 +161,7 @@ void FaceDatabaseProvider::update()
     if (m_suspectedRegions.contains(UNKNOWN_CONTACT)) {
         QList<QStandardItem *> row;
         row << new QStandardItem("Unknown");
-        row << new QStandardItem(QString().setNum(m_suspectedRegions.value(UNKNOWN_CONTACT).count()));
+        row << new QStandardItem(QString().setNum(countImages(m_suspectedRegions.value(UNKNOWN_CONTACT))));
         row << new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-main-view.png");
         row << new QStandardItem(UNKNOWN_CONTACT);
         insertRow(0, row);
