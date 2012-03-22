@@ -22,14 +22,6 @@ ifneq (,$(filter nolauncher,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "launcher=no"
 endif
 
-ifneq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-	DEB_QMAKE_ARGS += "doc=no"
-endif
-
-override_dh_auto_build:
-	dh_auto_build
-	$(MAKE) doc
-
 binary-aegisgen: binary-arch
 	aegis-deb-add -control debian/lookalike/DEBIAN/control .. debian/lookalike.aegis=_aegis
 
