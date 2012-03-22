@@ -22,10 +22,6 @@ ifneq (,$(filter nolauncher,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "launcher=no"
 endif
 
-ifneq (,$(filter notranslations,$(DEB_BUILD_OPTIONS)))
-	DEB_QMAKE_ARGS += "translations=no"
-endif
-
 ifneq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "doc=no"
 endif
