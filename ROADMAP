@@ -36,7 +36,10 @@ Proposed Contacts Tab
   mode deletion with all the pictures preselected. On accept, confirm
   on the selected items all the suggested areas to hold the suggested
   contact.
-
+  * NOTE: pictures can not be preselected, nor a "Select all" option can be
+	  added. GalleryGridPage handles all the logic to select/unselect
+	  items, and it does not export any kind of API to implement this
+          feature.
 
 Confirmed Contacts Tab
 ----------------------
