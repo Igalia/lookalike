@@ -43,6 +43,7 @@ public:
     ~FaceDatabaseProvider();
     QList<XQFaceRegion> getRegions(const QString &faceId);
     QString getContactName(const QString &faceId);
+    void hideRegion(QString &faceId, QString &sourceId);
 
 public slots:
     void update();

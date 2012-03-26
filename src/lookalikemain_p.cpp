@@ -49,11 +49,11 @@
 #include <QTimer>
 #include <QuillMetadata>
 #include <QuillMetadataRegion>
-#include <QuillMetadataRegionList>
 #include <xqfacedatabase.h>
 
 LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     QObject(q),
+    m_currentAction(0),
     q_ptr(q)
 {
     m_galleryModel = new GalleryModel(this);
@@ -107,6 +107,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
 
     m_confirmFaceAction = new MAction("Confirm faces", q);
     m_confirmFaceAction->setLocation(MAction::ApplicationMenuLocation);
+    m_deleteFaceAction = new MAction("Delete faces", q);
+    m_deleteFaceAction->setLocation(MAction::ApplicationMenuLocation);
     m_aboutAction = new MAction("About", q);
     m_aboutAction->setLocation(MAction::ApplicationMenuLocation);
 
@@ -140,6 +142,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onDataChanged()));
     connect(m_confirmFaceAction, SIGNAL(triggered()),
             this, SLOT(onConfirmFaceActionTriggered()));
+    connect(m_deleteFaceAction, SIGNAL(triggered()),
+            this, SLOT(onDeleteFaceActionTriggered()));
     connect(m_aboutAction, SIGNAL(triggered()),
             this, SLOT(onAboutActionTriggered()));
     connect(allTabAction, SIGNAL(toggled(bool)),
@@ -211,12 +215,6 @@ QRect LookAlikeMainPrivate::scaleRect(const QRect &rect, QSize &fromSize, QSize 
 void LookAlikeMainPrivate::updateTrackerFilter()
 {
     m_galleryModel->removeContentProvider(m_trackerProvider);
-    QSet<QString> urnImages;
-    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
-    foreach(XQFaceRegion region, regions) {
-        urnImages << region.sourceId();
-    }
-    m_trackerProvider->setUrns(urnImages);
     m_galleryModel->addContentProvider(m_trackerProvider);
 }
 
@@ -224,22 +222,24 @@ void LookAlikeMainPrivate::updateGrid()
 {
     m_gridPage->showTopBar(false);
     m_gridPage->removeAction(m_confirmFaceAction);
+    m_gridPage->removeAction(m_deleteFaceAction);
     m_gridPage->addAction(m_toolbarAction);
     m_gridPage->resetToDefaultState();
 }
 
-void LookAlikeMainPrivate::updateGrid(const QString &displayName, bool addConfirmationMenu)
+void LookAlikeMainPrivate::updateGrid(const QString &displayName, MAction *addAction)
 {
     m_gridPage->setTopBarText(displayName);
     m_gridPage->showTopBar(true);
     m_gridPage->removeAction(m_toolbarAction);
     //Remove and insert again to ensure it is always the first action
     m_gridPage->removeAction(m_confirmFaceAction);
-    if (addConfirmationMenu) {
+    m_gridPage->removeAction(m_deleteFaceAction);
+    if (addAction != 0) {
         if (m_gridPage->actions().isEmpty()) {
-            m_gridPage->addAction(m_confirmFaceAction);
+            m_gridPage->addAction(addAction);
         } else {
-            m_gridPage->insertAction(m_gridPage->actions().first(), m_confirmFaceAction);
+            m_gridPage->insertAction(m_gridPage->actions().first(), addAction);
         }
     }
     m_gridPage->resetToDefaultState();
@@ -251,6 +251,32 @@ void LookAlikeMainPrivate::showPage(MApplicationPage *page, bool history)
     if (!history) {
         MApplication::activeWindow()->sceneManager()->setPageHistory(QList<MSceneWindow*>());
     }
+}
+
+void LookAlikeMainPrivate::deleteFace(QUrl picture, QString& contact)
+{
+    //Remove face from Face Recognizer database
+    QString urnImage = urnFromUrl(picture);
+    m_faceDatabaseProvider->hideRegion(contact, urnImage);
+
+    //Update XMP metadata image, removing the deleted face
+    QString fileName = picture.toLocalFile();
+    QuillMetadata metadata(fileName, QuillMetadata::XmpFormat, QuillMetadata::Tag_Regions);
+    QVariant regionListVariant= metadata.entry(QuillMetadata::Tag_Regions);
+    QuillMetadataRegionList regionList = regionListVariant.value<QuillMetadataRegionList>();
+    //Let's remove the areas for this contact
+    int i = 0;
+    while (i < regionList.size()) {
+        QuillMetadataRegion metadataRegion = regionList.at(i);
+        QString regionContact = metadataRegion.extension("nco:PersonContact").toString();
+        if (regionContact == contact) {
+            regionList.removeAt(i);
+        } else {
+            i++;
+        }
+    }
+    //Save remaining regions
+    saveMetadataRegionList(fileName, regionList);
 }
 
 void LookAlikeMainPrivate::confirmFace(QUrl picture, QString& contact)
@@ -276,30 +302,33 @@ void LookAlikeMainPrivate::confirmFace(QUrl picture, QString& contact)
     metadataRegion.setExtension("nco:PersonContact", contact);
     QuillMetadataRegionList regionList;
     regionList.append(metadataRegion);
-    QuillMetadata metadata(fileName, QuillMetadata::XmpFormat);
-    QVariant variant;
-    variant.setValue(regionList);
-    metadata.setEntry(QuillMetadata::Tag_Regions, variant);
-    metadata.write(fileName, QuillMetadata::XmpFormat);
-
+    saveMetadataRegionList(fileName, regionList);
 }
 
 void LookAlikeMainPrivate::onProposedContactPersonSelected(const QString &personId, const QString &displayName)
 {
     m_personSelected = personId;
     if (m_personSelected == UNKNOWN_CONTACT) {
-        updateGrid(displayName, false);
+        updateGrid(displayName);
     } else {
-        updateGrid(displayName, true);
+        updateGrid(displayName, m_confirmFaceAction);
     }
+    QSet<QString> urnImages;
+    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
+    foreach(XQFaceRegion region, regions) {
+        urnImages << region.sourceId();
+    }
+    m_trackerProvider->setUrns(urnImages);
     m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
+
     updateTrackerFilter();
     showPage(m_gridPage, true);
 }
 
 void LookAlikeMainPrivate::onConfirmedContactSelected(const QString &personId, const QString &displayName)
 {
-    updateGrid(displayName, false);
+    m_personSelected = personId;
+    updateGrid(displayName, m_deleteFaceAction);
     m_trackerProvider->setContact(personId);
     m_trackerProvider->setContentType(TrackerContentProvider::WithContact);
     updateTrackerFilter();
@@ -308,7 +337,14 @@ void LookAlikeMainPrivate::onConfirmedContactSelected(const QString &personId, c
 
 void LookAlikeMainPrivate::onConfirmFaceActionTriggered()
 {
+    m_currentAction = m_confirmFaceAction;
     m_gridPage->startMultiSelection("Confirm");
+}
+
+void LookAlikeMainPrivate::onDeleteFaceActionTriggered()
+{
+    m_currentAction = m_deleteFaceAction;
+    m_gridPage->startMultiSelection("Delete");
 }
 
 void LookAlikeMainPrivate::onAboutActionTriggered()
@@ -363,7 +399,7 @@ void LookAlikeMainPrivate::onAboutActionTriggered()
 
 void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
 {
-    m_facesToConfirm = urlList;
+    m_facesToProcess = urlList;
     m_progress = new MProgressIndicator(0, MProgressIndicator::barType);
     m_progress->setStyleName(("CommonProgressBarInverted"));
     m_progress->setRange(0, urlList.size());
@@ -372,25 +408,38 @@ void LookAlikeMainPrivate::onMultiSelectionDone(QList<QUrl> urlList)
     m_progressDialog->appear(MSceneWindow::DestroyWhenDone);
 
     connect(m_progressDialog, SIGNAL(appeared()),
-            this, SLOT(confirmFaces()),
+            this, SLOT(processFaces()),
+            Qt::QueuedConnection);
+    connect(m_progress, SIGNAL(valueChanged(int)),
+            this, SLOT(processFaces()),
             Qt::QueuedConnection);
     connect(m_progressDialog, SIGNAL(rejected()),
             this, SLOT(onProgressDialogRejected()));
-    connect(m_progress, SIGNAL(valueChanged(int)),
-            this, SLOT(confirmFaces()),
-            Qt::QueuedConnection);
 }
 
-void LookAlikeMainPrivate::confirmFaces()
+void LookAlikeMainPrivate::processFaces()
 {
-    if (m_facesToConfirm.isEmpty()) {
+    if (m_facesToProcess.isEmpty()) {
         m_progressDialog->dismiss();
     } else {
-        QUrl toConfirm = m_facesToConfirm.first();
-        confirmFace(toConfirm, m_personSelected);
-        m_facesToConfirm.removeFirst();
+        QUrl toProcess = m_facesToProcess.first();
+        if (m_currentAction == m_confirmFaceAction) {
+            confirmFace(toProcess, m_personSelected);
+        } else {
+            deleteFace(toProcess, m_personSelected);
+        }
+        m_facesToProcess.removeFirst();
         m_progress->setValue(m_progress->value() + 1);
     }
+}
+
+void LookAlikeMainPrivate::saveMetadataRegionList(QString &fileName, QuillMetadataRegionList &regionList)
+{
+    QuillMetadata metadata(fileName, QuillMetadata::XmpFormat);
+    QVariant variant;
+    variant.setValue(regionList);
+    metadata.setEntry(QuillMetadata::Tag_Regions, variant);
+    metadata.write(fileName, QuillMetadata::XmpFormat);
 }
 
 void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
@@ -436,7 +485,7 @@ void LookAlikeMainPrivate::onConfirmedContactTabActionToggled(bool toggled)
 
 void LookAlikeMainPrivate::onProgressDialogRejected()
 {
-    m_facesToConfirm.clear();
+    m_facesToProcess.clear();
 }
 
 void LookAlikeMainPrivate::onGridPageAppeared()

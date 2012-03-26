@@ -198,3 +198,10 @@ void FaceDatabaseProvider::moveRegions(QString &fromFaceId, QString &toFaceId)
     toRegions << fromRegions;
     m_suspectedRegions.insert(toFaceId, toRegions);
 }
+
+void FaceDatabaseProvider::hideRegion(QString &faceId, QString &sourceId)
+{
+    XQFaceGroup group = m_faceDatabase->faceGroup(faceId);
+    XQFaceRegion region = group.faceRegion(sourceId);
+    region.hide();
+}

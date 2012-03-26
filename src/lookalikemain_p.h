@@ -29,6 +29,7 @@
 #include <QAbstractItemModel>
 #include <QObject>
 #include <QUrl>
+#include <QuillMetadataRegionList>
 
 class FaceDatabaseProvider;
 class FaceTrackerProvider;
@@ -57,9 +58,10 @@ public:
     QRect scaleRect(const QRect &rect, QSize &fromSize, QSize &toSize);
     void updateTrackerFilter();
     void updateGrid();
-    void updateGrid(const QString& displayName, bool addConfirmationMenu = true);
+    void updateGrid(const QString& displayName, MAction *addAction = 0);
     void showPage(MApplicationPage *page, bool history = false);
     void confirmFace(QUrl image, QString& contact);
+    void deleteFace(QUrl image, QString& contact);
 
     TrackerContentProvider *m_trackerProvider;
     GalleryModel *m_galleryModel;
@@ -71,17 +73,21 @@ public:
     FaceTrackerProvider *m_faceTrackerProvider;
     QString m_personSelected;
     MAction* m_confirmFaceAction;
+    MAction* m_deleteFaceAction;
     MAction* m_aboutAction;
     MWidgetAction* m_toolbarAction;
-    QList<QUrl> m_facesToConfirm;
+    QList<QUrl> m_facesToProcess;
     MDialog* m_progressDialog;
     MProgressIndicator *m_progress;
+    MAction* m_currentAction;
 
 public slots:
-    void confirmFaces();
+    void processFaces();
+    void saveMetadataRegionList(QString &fileName, QuillMetadataRegionList &regionList);
     void onProposedContactPersonSelected(const QString &personId, const QString &displayName);
     void onConfirmedContactSelected(const QString &personId, const QString &displayName);
     void onConfirmFaceActionTriggered();
+    void onDeleteFaceActionTriggered();
     void onAboutActionTriggered();
     void onMultiSelectionDone(QList<QUrl> urlList);
     void onItemSelected(const QUrl& url);
