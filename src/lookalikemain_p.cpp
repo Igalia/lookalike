@@ -357,9 +357,9 @@ void LookAlikeMainPrivate::onAboutActionTriggered()
         const QString contact = "<a href=\"mailto:agomez@igalia.com\">agomez@igalia.com</a> | "
                                 "<a href=\"http://www.igalia.com\">www.igalia.com</a>";
         const QString license = "This program is free software: you can redistribute it and/or modify "
-                                "it under the terms of the GNU General Public License as published by "
-                                "the Free Software Foundation, either version 3 of the License, or "
-                                "(at your option) any later version.<br /><br />"
+                                "it under the terms of the GNU Lesser General Public License "
+				" as published by the Free Software Foundation; version 2.1 of "
+				" the License, or (at your option) any later version.<br /><br />"
                                 "This package is distributed in the hope that it will be useful, "
                                 "but WITHOUT ANY WARRANTY; without even the implied warranty of "
                                 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
