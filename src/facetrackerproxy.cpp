@@ -43,16 +43,16 @@ FaceTrackerProxy::FaceTrackerProxy(FaceTrackerProvider *trackerProvider, QAbstra
 
     if (model) {
         setSourceModel(model);
-        Q_ASSERT(connect(model, SIGNAL(rowsAboutToBeInserted(const QModelIndex&, int, int)),
-                this, SLOT(onRowsAboutToBeInserted(const QModelIndex&, int, int))));
-        Q_ASSERT(connect(model, SIGNAL(rowsInserted(const QModelIndex&, int, int)),
-                         this, SLOT(onRowsInserted())));
-        Q_ASSERT(connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)),
-                this, SLOT(onRowsAboutToBeRemoved(const QModelIndex&, int, int))));
-        Q_ASSERT(connect(model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
-                         this, SLOT(onRowsRemoved())));
-        Q_ASSERT(connect(model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)),
-                         this, SLOT(onDataChanged(const QModelIndex&, const QModelIndex&))));
+        connect(model, SIGNAL(rowsAboutToBeInserted(const QModelIndex&, int, int)),
+                this, SLOT(onRowsAboutToBeInserted(const QModelIndex&, int, int)));
+        connect(model, SIGNAL(rowsInserted(const QModelIndex&, int, int)),
+                this, SLOT(onRowsInserted()));
+        connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)),
+                this, SLOT(onRowsAboutToBeRemoved(const QModelIndex&, int, int)));
+        connect(model, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
+                this, SLOT(onRowsRemoved()));
+        connect(model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)),
+                this, SLOT(onDataChanged(const QModelIndex&, const QModelIndex&)));
         updateEverybodyCount();
    }
 }
