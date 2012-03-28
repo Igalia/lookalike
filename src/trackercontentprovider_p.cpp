@@ -150,13 +150,20 @@ void TrackerContentProviderPrivate::buildQueryWithContact()
                          "       tracker:available \"true\"^^xsd:boolean .\n"
                          "  OPTIONAL { ?urn nie:contentCreated ?created } .\n"
                          "  FILTER( EXISTS { ?urn nfo:hasRegionOfInterest ?roi .\n"
-                         "                   ?roi nfo:regionOfInterestType nfo:roi-content-face ;\n"
-                         "                        nfo:roiRefersTo <%1> } ).\n"
+                         "                   ?roi nfo:regionOfInterestType nfo:roi-content-face .\n"
+                         "                   %1 } ).\n"
                          "  %2"
                          "}\n");
 
-    QString mainSentence = QString(sparqlStubSentence).arg(m_contact).arg("");
-    QString updateSentence = QString(sparqlStubSentence).arg(m_contact).arg("%FILTER\n");
+    QString mainSentence;
+    QString updateSentence;
+    if (m_contact.isEmpty()) {
+        mainSentence = QString(sparqlStubSentence).arg("").arg("");
+        updateSentence = QString(sparqlStubSentence).arg("").arg("%FILTER");
+    } else {
+        mainSentence = QString(sparqlStubSentence).arg("?roi nfo:roiRefersTo <" + m_contact + "> .").arg("");
+        updateSentence = QString(sparqlStubSentence).arg("?roi nfo:roiRefersTo <" + m_contact + "> .").arg("%FILTER\n");
+    }
 
     if (m_limit > 0) {
         mainSentence += QString("LIMIT %1").arg(m_limit);

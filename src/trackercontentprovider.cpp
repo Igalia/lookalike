@@ -53,11 +53,6 @@ void TrackerContentProvider::queryContent(int limit)
         d->buildQueryAllImages();
         break;
     case WithContact:
-        if (d->m_contact.isEmpty()) {
-            d->deleteLiveQuery();
-            onInitialQueryFinished();
-            return;
-        }
         d->m_queryRunning = true;
         d->buildQueryWithContact();
         break;

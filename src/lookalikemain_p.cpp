@@ -24,6 +24,7 @@
 
 #include "facedatabaseprovider.h"
 #include "facetrackerprovider.h"
+#include "facetrackerproxy.h"
 #include "galleryfullscreenpage.h"
 #include "gallerygridpage.h"
 #include "gallerymodel.h"
@@ -329,7 +330,11 @@ void LookAlikeMainPrivate::onConfirmedContactSelected(const QString &personId, c
 {
     m_personSelected = personId;
     updateGrid(displayName, m_deleteFaceAction);
-    m_trackerProvider->setContact(personId);
+    if (personId == EVERYBODY_CONTACT) {
+        m_trackerProvider->setContact(QString());
+    } else {
+        m_trackerProvider->setContact(personId);
+    }
     m_trackerProvider->setContentType(TrackerContentProvider::WithContact);
     updateTrackerFilter();
     showPage(m_gridPage, true);
