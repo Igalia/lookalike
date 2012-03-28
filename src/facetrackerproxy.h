@@ -30,11 +30,14 @@
 
 const QString EVERYBODY_CONTACT = "extfr:everybody";
 
+class FaceTrackerProvider;
+class QSparqlConnection;
+
 class FaceTrackerProxy : public QAbstractProxyModel
 {
     Q_OBJECT
 public:
-    explicit FaceTrackerProxy(QAbstractItemModel *model, QObject *parent = 0);
+    explicit FaceTrackerProxy(FaceTrackerProvider *trackerProvider, QAbstractItemModel *model);
     virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
     virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
     virtual QModelIndex parent(const QModelIndex &child) const;
@@ -51,6 +54,9 @@ private slots:
     void onDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
 private:
+    void updateEverybodyCount();
+
+    QSparqlConnection *m_sparqlConnection;
     QStandardItemModel m_everybodyModel;
 };
 

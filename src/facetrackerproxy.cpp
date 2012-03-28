@@ -23,10 +23,16 @@
  */
 
 #include "facetrackerproxy.h"
+#include "facetrackerprovider.h"
+#include <QSparqlConnection>
+#include <QSparqlQuery>
+#include <QSparqlResult>
 
-FaceTrackerProxy::FaceTrackerProxy(QAbstractItemModel *model, QObject *parent) :
-    QAbstractProxyModel(parent),
+FaceTrackerProxy::FaceTrackerProxy(FaceTrackerProvider *trackerProvider, QAbstractItemModel *model) :
+    QAbstractProxyModel(trackerProvider),
+    m_sparqlConnection(trackerProvider->connection()),
     m_everybodyModel(0, 4)
+
 {
     QList<QStandardItem*> items;
     items.append(new QStandardItem("Everybody"));
@@ -47,6 +53,7 @@ FaceTrackerProxy::FaceTrackerProxy(QAbstractItemModel *model, QObject *parent) :
                          this, SLOT(onRowsRemoved())));
         Q_ASSERT(connect(model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)),
                          this, SLOT(onDataChanged(const QModelIndex&, const QModelIndex&))));
+        updateEverybodyCount();
    }
 }
 
@@ -122,11 +129,12 @@ void FaceTrackerProxy::onRowsAboutToBeInserted(const QModelIndex &parent, int fi
     Q_UNUSED(first);
     Q_UNUSED(last);
 
-    beginInsertRows(parent, first, last);
+    beginInsertRows(parent, first + 1, last + 1);
 }
 
 void FaceTrackerProxy::onRowsInserted()
 {
+    updateEverybodyCount();
     endInsertRows();
 }
 
@@ -136,17 +144,39 @@ void FaceTrackerProxy::onRowsAboutToBeRemoved(const QModelIndex &parent, int fir
     Q_UNUSED(first);
     Q_UNUSED(last);
 
-    beginRemoveRows(parent, first, last);
+    beginRemoveRows(parent, first + 1, last + 1);
 }
 
 void FaceTrackerProxy::onRowsRemoved()
 {
+    updateEverybodyCount();
     endRemoveRows();
 }
 
 void FaceTrackerProxy::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+    updateEverybodyCount();
+
     QModelIndex proxyTopLeft = mapFromSource(topLeft);
     QModelIndex proxyBottomRight = mapFromSource(bottomRight);
     emit dataChanged(proxyTopLeft, proxyBottomRight);
+}
+
+void FaceTrackerProxy::updateEverybodyCount()
+{
+    static QSparqlQuery query("SELECT\n"
+                             "  COUNT(DISTINCT ?visual)\n"
+                             "WHERE {\n"
+                             "  ?visual rdf:type nfo:Visual ;\n"
+                             "          nfo:hasRegionOfInterest ?region .\n"
+                             "  ?region nfo:regionOfInterestType nfo:roi-content-face .\n"
+                             "}");
+    QSparqlResult *result = m_sparqlConnection->syncExec(query);
+    if (!result->hasError() && result->first()) {
+        m_everybodyModel.setItem(0, 1, new QStandardItem(result->value(0).toString()));
+        QModelIndex indexChanged = createIndex(0, 1);
+        emit dataChanged(indexChanged, indexChanged);
+    }
+
+    delete result;
 }

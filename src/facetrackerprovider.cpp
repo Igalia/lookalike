@@ -76,7 +76,7 @@ FaceTrackerProvider::FaceTrackerProvider(QSparqlConnection *connection, QObject 
     m_liveQuery->setUpdatesEnabled(true);
     m_liveQuery->start();
 
-    m_proxy = new FaceTrackerProxy(m_liveQuery->model(), this);
+    m_proxy = new FaceTrackerProxy(this, m_liveQuery->model());
 }
 
 FaceTrackerProvider::~FaceTrackerProvider()
@@ -88,4 +88,9 @@ FaceTrackerProvider::~FaceTrackerProvider()
 QAbstractItemModel* FaceTrackerProvider::model()
 {
     return m_proxy;
+}
+
+QSparqlConnection* FaceTrackerProvider::connection()
+{
+    return m_sparqlConnection;
 }

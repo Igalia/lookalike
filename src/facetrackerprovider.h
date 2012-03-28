@@ -39,7 +39,11 @@ public:
     explicit FaceTrackerProvider(QSparqlConnection *connection, QObject *parent = 0);
     ~FaceTrackerProvider();
     QAbstractItemModel* model();
+    QSparqlConnection* connection();
+
 private:
+    void updateEverybodyCount();
+
     QSparqlConnection *m_sparqlConnection;
     TrackerLiveQuery *m_liveQuery;
     FaceTrackerProxy *m_proxy;
