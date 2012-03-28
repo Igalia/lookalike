@@ -30,6 +30,7 @@
 class QAbstractItemModel;
 class QSparqlConnection;
 class TrackerLiveQuery;
+class FaceTrackerProxy;
 
 class FaceTrackerProvider : public QObject
 {
@@ -41,6 +42,7 @@ public:
 private:
     QSparqlConnection *m_sparqlConnection;
     TrackerLiveQuery *m_liveQuery;
+    FaceTrackerProxy *m_proxy;
 };
 
 #endif // FACETRACKERPROVIDER_H

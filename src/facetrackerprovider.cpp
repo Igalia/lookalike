@@ -23,6 +23,7 @@
  */
 
 #include "facetrackerprovider.h"
+#include "facetrackerproxy.h"
 #include <QAbstractItemModel>
 #include <QSparqlConnection>
 #include <QStringList>
@@ -74,14 +75,17 @@ FaceTrackerProvider::FaceTrackerProvider(QSparqlConnection *connection, QObject 
     m_liveQuery->addUpdater(updater);
     m_liveQuery->setUpdatesEnabled(true);
     m_liveQuery->start();
+
+    m_proxy = new FaceTrackerProxy(m_liveQuery->model(), this);
 }
 
 FaceTrackerProvider::~FaceTrackerProvider()
 {
     delete m_liveQuery;
+    delete m_proxy;
 }
 
 QAbstractItemModel* FaceTrackerProvider::model()
 {
-    return m_liveQuery->model();
+    return m_proxy;
 }
