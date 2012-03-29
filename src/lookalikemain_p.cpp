@@ -86,10 +86,15 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     proposedContactsAction->setLocation(MAction::ToolBarLocation);
     proposedContactsAction->setCheckable(true);
 
+    MAction* landscapeTabAction = new MAction("icon-m-toolbar-no-people-white", "", q);
+    landscapeTabAction->setLocation(MAction::ToolBarLocation);
+    landscapeTabAction->setCheckable(true);
+
     QList<QAction*> actions;
     actions.append(allTabAction);
     actions.append(confirmedContactsTabAction);
     actions.append(proposedContactsAction);
+    actions.append(landscapeTabAction);
 
     MToolBar* toolbar = new MToolBar();
     toolbar->setStyleName("MToolbarTabStyleInverted");
@@ -148,6 +153,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onConfirmedContactTabActionToggled(bool)));
     connect(proposedContactsAction, SIGNAL(toggled(bool)),
             this, SLOT(onProposedContactTabActionToggled(bool)));
+    connect(landscapeTabAction, SIGNAL(toggled(bool)),
+            this, SLOT(onLandscapeTabActionToggled(bool)));
     connect(m_gridPage, SIGNAL(appeared()),
             this, SLOT(onGridPageAppeared()));
     connect(m_fullScreenPage, SIGNAL(appeared()),
@@ -219,6 +226,8 @@ void LookAlikeMainPrivate::updateGrid()
     m_gridPage->showTopBar(false);
     m_gridPage->removeAction(m_confirmFaceAction);
     m_gridPage->removeAction(m_deleteFaceAction);
+    //Remove and insert again to ensure it is always inserted only once
+    m_gridPage->removeAction(m_toolbarAction);
     m_gridPage->addAction(m_toolbarAction);
     m_gridPage->resetToDefaultState();
 }
@@ -241,10 +250,9 @@ void LookAlikeMainPrivate::updateGrid(const QString &displayName, MAction *addAc
     m_gridPage->resetToDefaultState();
 }
 
-void LookAlikeMainPrivate::updateUrnImages()
+void LookAlikeMainPrivate::updateUrnImages(QList<XQFaceRegion> regions)
 {
     QSet<QString> urnImages;
-    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
     foreach(XQFaceRegion region, regions) {
         urnImages << region.sourceId();
     }
@@ -319,7 +327,7 @@ void LookAlikeMainPrivate::onProposedContactPersonSelected(const QString &person
     } else {
         updateGrid(displayName, m_confirmFaceAction);
     }
-    updateUrnImages();
+    updateUrnImages(m_faceDatabaseProvider->getRegions(m_personSelected));
     m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
     updateTrackerFilter();
     showPage(m_gridPage, true);
@@ -457,7 +465,11 @@ void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
 void LookAlikeMainPrivate::onDataChanged()
 {
     m_faceDatabaseProvider->update();
-    updateUrnImages();
+    if (m_trackerProvider->contentType() == TrackerContentProvider::FilterImagesNoFace) {
+        updateUrnImages(m_faceDatabaseProvider->getRegions());
+    } else {
+        updateUrnImages(m_faceDatabaseProvider->getRegions(m_personSelected));
+    }
     updateTrackerFilter();
 }
 
@@ -485,6 +497,18 @@ void LookAlikeMainPrivate::onConfirmedContactTabActionToggled(bool toggled)
     if (toggled) {
         m_personSelected = UNKNOWN_CONTACT;
         showPage(m_confirmedContactsListPage);
+    }
+}
+
+void LookAlikeMainPrivate::onLandscapeTabActionToggled(bool toggled)
+{
+    if (toggled) {
+        m_personSelected = UNKNOWN_CONTACT;
+        updateGrid();
+        updateUrnImages(m_faceDatabaseProvider->getRegions());
+        m_trackerProvider->setContentType(TrackerContentProvider::FilterImagesNoFace);
+        updateTrackerFilter();
+        showPage(m_gridPage);
     }
 }
 

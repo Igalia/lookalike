@@ -184,6 +184,18 @@ QList<XQFaceRegion> FaceDatabaseProvider::getRegions(const QString &faceId)
     return m_suspectedRegions.value(faceId);
 }
 
+QList<XQFaceRegion> FaceDatabaseProvider::getRegions()
+{
+    QList< QList<XQFaceRegion> > allRegions = m_suspectedRegions.values();
+    /* Flat the list */
+    QList<XQFaceRegion> flatAllRegions;
+    foreach(QList<XQFaceRegion> regionList, allRegions) {
+        flatAllRegions += regionList;
+    }
+
+    return flatAllRegions;
+}
+
 QString FaceDatabaseProvider::getContactName(const QString &faceId)
 {
     int row = findItems(faceId, Qt::MatchExactly, GalleryPeopleListPage::IdColumn).at(0)->row();

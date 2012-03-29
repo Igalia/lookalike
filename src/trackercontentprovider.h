@@ -37,11 +37,13 @@ public:
     enum ContentType {
         AllImages,
         ListImages,
+        FilterImagesNoFace,
         WithContact,
     };
 
     TrackerContentProvider(QSparqlConnection *connection, QObject *parent = 0);
     QAbstractItemModel *model() const;
+    ContentType contentType();
     virtual bool isLoadingContent() const;
     virtual void queryContent(int limit=-1);
     void setUrns(QSet<QString>& urnList);

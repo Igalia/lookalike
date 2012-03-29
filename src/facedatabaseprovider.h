@@ -42,6 +42,7 @@ public:
     explicit FaceDatabaseProvider(QSparqlConnection *connection, QObject *parent = 0);
     ~FaceDatabaseProvider();
     QList<XQFaceRegion> getRegions(const QString &faceId);
+    QList<XQFaceRegion> getRegions();
     QString getContactName(const QString &faceId);
     void hideRegion(QString &faceId, QString &sourceId);
 

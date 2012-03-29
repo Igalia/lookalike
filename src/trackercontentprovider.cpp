@@ -48,6 +48,15 @@ void TrackerContentProvider::queryContent(int limit)
         d->m_queryRunning = true;
         d->buildQueryListImages();
         break;
+    case FilterImagesNoFace:
+        if (d->m_urnSet.isEmpty()) {
+            d->deleteLiveQuery();
+            onInitialQueryFinished();
+            return;
+        }
+        d->m_queryRunning = true;
+        d->buildQueryFilterImagesNoFace();
+        break;
     case AllImages:
         d->m_queryRunning = true;
         d->buildQueryAllImages();
@@ -91,6 +100,11 @@ QAbstractItemModel* TrackerContentProvider::model() const
     Q_D(const TrackerContentProvider);
 
     return d->m_liveQuery? d->m_liveQuery->model(): 0;
+}
+
+TrackerContentProvider::ContentType TrackerContentProvider::contentType()
+{
+    return m_contentType;
 }
 
 void TrackerContentProvider::setUrns(QSet<QString> &urnList)

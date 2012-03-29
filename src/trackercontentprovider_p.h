@@ -39,6 +39,7 @@ public:
     explicit TrackerContentProviderPrivate(TrackerContentProvider *q, QSparqlConnection *connection);
     ~TrackerContentProviderPrivate();
     void buildQueryListImages();
+    void buildQueryFilterImagesNoFace();
     void buildQueryAllImages();
     void buildQueryWithContact();
     void deleteLiveQuery();
