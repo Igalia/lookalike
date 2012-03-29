@@ -34,13 +34,6 @@ FaceTrackerProxy::FaceTrackerProxy(FaceTrackerProvider *trackerProvider, QAbstra
     m_everybodyModel(0, 4)
 
 {
-    QList<QStandardItem*> items;
-    items.append(new QStandardItem("Everybody"));
-    items.append(new QStandardItem("0"));
-    items.append(new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-everybody-main-view.png"));
-    items.append(new QStandardItem(EVERYBODY_CONTACT));
-    m_everybodyModel.appendRow(items);
-
     if (model) {
         setSourceModel(model);
         connect(model, SIGNAL(rowsAboutToBeInserted(const QModelIndex&, int, int)),
@@ -92,7 +85,7 @@ QModelIndex FaceTrackerProxy::parent(const QModelIndex &child) const
 
 int FaceTrackerProxy::rowCount(const QModelIndex &parent) const
 {
-    return sourceModel()->rowCount(parent) + 1;
+    return sourceModel()->rowCount(parent) + m_everybodyModel.rowCount();
 }
 
 int FaceTrackerProxy::columnCount(const QModelIndex &parent) const
@@ -172,11 +165,32 @@ void FaceTrackerProxy::updateEverybodyCount()
                              "  ?region nfo:regionOfInterestType nfo:roi-content-face .\n"
                              "}");
     QSparqlResult *result = m_sparqlConnection->syncExec(query);
+    QString count;
     if (!result->hasError() && result->first()) {
-        m_everybodyModel.setItem(0, 1, new QStandardItem(result->value(0).toString()));
-        QModelIndex indexChanged = createIndex(0, 1);
-        emit dataChanged(indexChanged, indexChanged);
+        count = result->value(0).toString();
+    } else {
+        count = "0";
     }
 
     delete result;
+    if (count == "0") {
+        beginRemoveRows(QModelIndex(), 0, 0);
+        m_everybodyModel.removeRow(0);
+        endRemoveRows();
+    } else {
+        if (m_everybodyModel.rowCount() > 0) {
+            m_everybodyModel.setItem(0, 1, new QStandardItem(count));
+            QModelIndex indexChanged = createIndex(0, 1);
+            emit dataChanged(indexChanged, indexChanged);
+        } else {
+            beginInsertRows(QModelIndex(), 0, 0);
+            QList<QStandardItem*> items;
+            items.append(new QStandardItem("Everybody"));
+            items.append(new QStandardItem(count));
+            items.append(new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-everybody-main-view.png"));
+            items.append(new QStandardItem(EVERYBODY_CONTACT));
+            m_everybodyModel.appendRow(items);
+            endInsertRows();
+        }
+    }
 }

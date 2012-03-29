@@ -148,23 +148,29 @@ void FaceDatabaseProvider::update()
             /* The contact does not exist; let's move all the regions to unknown contact */
             moveRegions(key, UNKNOWN_CONTACT);
         } else {
-            QList<QStandardItem *> row;
-            row << new QStandardItem(resolvedValues[0]);
-            row << new QStandardItem(QString().setNum(countImages(m_suspectedRegions.value(key))));
-            row << new QStandardItem(resolvedValues[1]);
-            row << new QStandardItem(key);
-            appendRow(row);
+            int totalImages = countImages(m_suspectedRegions.value(key));
+            if (totalImages > 0) {
+                QList<QStandardItem *> row;
+                row << new QStandardItem(resolvedValues[0]);
+                row << new QStandardItem(QString().setNum(totalImages));
+                row << new QStandardItem(resolvedValues[1]);
+                row << new QStandardItem(key);
+                appendRow(row);
+            }
         }
     }
 
     /* Add the unknown contact, if needed */
     if (m_suspectedRegions.contains(UNKNOWN_CONTACT)) {
-        QList<QStandardItem *> row;
-        row << new QStandardItem("Unknown");
-        row << new QStandardItem(QString().setNum(countImages(m_suspectedRegions.value(UNKNOWN_CONTACT))));
-        row << new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-main-view.png");
-        row << new QStandardItem(UNKNOWN_CONTACT);
-        insertRow(0, row);
+        int totalImages = countImages(m_suspectedRegions.value(UNKNOWN_CONTACT));
+        if (totalImages > 0) {
+            QList<QStandardItem *> row;
+            row << new QStandardItem("Unknown");
+            row << new QStandardItem(QString().setNum(totalImages));
+            row << new QStandardItem("/usr/share/themes/base/meegotouch/lookalike/icons/icon-m-lookalike-main-view.png");
+            row << new QStandardItem(UNKNOWN_CONTACT);
+            insertRow(0, row);
+        }
     }
 
     /* Notify model change */
