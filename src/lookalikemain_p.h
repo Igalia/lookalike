@@ -59,6 +59,7 @@ public:
     void updateTrackerFilter();
     void updateGrid();
     void updateGrid(const QString& displayName, MAction *addAction = 0);
+    void updateUrnImages();
     void showPage(MApplicationPage *page, bool history = false);
     void confirmFace(QUrl image, QString& contact);
     void deleteFace(QUrl image, QString& contact);

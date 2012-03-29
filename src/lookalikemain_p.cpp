@@ -246,6 +246,16 @@ void LookAlikeMainPrivate::updateGrid(const QString &displayName, MAction *addAc
     m_gridPage->resetToDefaultState();
 }
 
+void LookAlikeMainPrivate::updateUrnImages()
+{
+    QSet<QString> urnImages;
+    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
+    foreach(XQFaceRegion region, regions) {
+        urnImages << region.sourceId();
+    }
+    m_trackerProvider->setUrns(urnImages);
+}
+
 void LookAlikeMainPrivate::showPage(MApplicationPage *page, bool history)
 {
     MApplication::activeApplicationWindow()->sceneManager()->appearSceneWindowNow(page);
@@ -314,14 +324,8 @@ void LookAlikeMainPrivate::onProposedContactPersonSelected(const QString &person
     } else {
         updateGrid(displayName, m_confirmFaceAction);
     }
-    QSet<QString> urnImages;
-    QList<XQFaceRegion> regions = m_faceDatabaseProvider->getRegions(m_personSelected);
-    foreach(XQFaceRegion region, regions) {
-        urnImages << region.sourceId();
-    }
-    m_trackerProvider->setUrns(urnImages);
+    updateUrnImages();
     m_trackerProvider->setContentType(TrackerContentProvider::ListImages);
-
     updateTrackerFilter();
     showPage(m_gridPage, true);
 }
@@ -458,6 +462,7 @@ void LookAlikeMainPrivate::onItemSelected(const QUrl &url)
 void LookAlikeMainPrivate::onDataChanged()
 {
     m_faceDatabaseProvider->update();
+    updateUrnImages();
     updateTrackerFilter();
 }
 
