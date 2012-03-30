@@ -159,6 +159,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onGridPageAppeared()));
     connect(m_fullScreenPage, SIGNAL(appeared()),
             this, SLOT(onFullscreenPageAppeared()));
+    connect(m_fullScreenPage, SIGNAL(loadingActiveItemFailed(QString)),
+            m_fullScreenPage, SLOT(disappear()));
 
     allTabAction->toggle();
 }
