@@ -161,6 +161,8 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
             this, SLOT(onFullscreenPageAppeared()));
     connect(m_fullScreenPage, SIGNAL(loadingActiveItemFailed(QString)),
             m_fullScreenPage, SLOT(disappear()));
+    connect(m_galleryModel, SIGNAL(galleryItemsRemoved(int,int)),
+            this, SLOT(onGalleryItemsRemoved()));
 
     allTabAction->toggle();
 }
@@ -527,4 +529,12 @@ void LookAlikeMainPrivate::onGridPageAppeared()
 void LookAlikeMainPrivate::onFullscreenPageAppeared()
 {
     m_fullScreenPage->addAction(m_aboutAction);
+}
+
+void LookAlikeMainPrivate::onGalleryItemsRemoved()
+{
+    if (m_gridPage->itemCount() == 0 &&
+        MApplication::activeApplicationWindow()->currentPage() == m_fullScreenPage) {
+        m_fullScreenPage->disappear();
+    }
 }

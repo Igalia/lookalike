@@ -100,6 +100,7 @@ public slots:
     void onProgressDialogRejected();
     void onGridPageAppeared();
     void onFullscreenPageAppeared();
+    void onGalleryItemsRemoved();
 
 private:
     LookAlikeMain *q_ptr;
