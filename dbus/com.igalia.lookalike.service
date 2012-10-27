@@ -1,5 +1,0 @@
-[D-BUS Service]
-Interface=com.igalia.lookalike
-Name=com.igalia.lookalike
-Exec=/usr/bin/invoker --type=m /usr/bin/lookalike
-

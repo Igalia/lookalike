@@ -16,9 +16,22 @@ contains( launcher, no ) {
      INVOKERTYPEOPTION = "e"
 }
 
+# message( "Defines:" )
+# message( "PREFIX:" $$PREFIX )
+# message( "DATADIR:" $$DATADIR )
+# message( "PKGDATADIR:" $$PKGDATADIR )
+
 QMAKE_SUBSTITUTES += \
-     desktopfiles/$${TARGET}.desktop.in \
-     debian/lookalike.install.in
+      desktopfiles/$${TARGET}.desktop.in \
+      dbus/com.igalia.$${TARGET}.service.in \
+      debian/lintian-overrides.in \
+      debian/$${TARGET}.aegis.in \
+      debian/$${TARGET}.lintian-overrides.in \
+      debian/$${TARGET}.install.in
+
+#MAKE INSTALL
+
+INSTALLS += meegotouch service script desktop icon80 splash theme
 
 # Style
 include($$[QT_INSTALL_DATA]/mkspecs/features/meegotouch_defines.prf)
@@ -38,10 +51,10 @@ service.path = $$DATADIR/dbus-1/services/
 desktop.files = desktopfiles/$${TARGET}.desktop
 desktop.path = $$DATADIR/applications
 
-icon64.path = $$DATADIR/icons/hicolor/64x64/apps
-icon64.files += art/icon-l-$${TARGET}.png
+icon80.path = $$DATADIR/icons/hicolor/80x80/apps
+icon80.files += art/icon-l-$${TARGET}.png
 
-splash.path = $$DATADIR/$${TARGET}/
+splash.path = $$PKGDATADIR/splash/
 splash.files += art/$${TARGET}-splash-landscape.png
 splash.files += art/$${TARGET}-splash-portrait.png
 
@@ -49,4 +62,3 @@ splash.files += art/$${TARGET}-splash-portrait.png
 script.files = $${TARGET}
 script.path = $$BINDIR
 
-INSTALLS += meegotouch service script desktop icon64 splash theme

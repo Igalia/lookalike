@@ -1,0 +1,5 @@
+[D-BUS Service]
+Interface=com.igalia.$$TARGET
+Name=com.igalia.$$TARGET
+Exec=/usr/bin/invoker --type=m $$BINDIR/$$TARGET
+

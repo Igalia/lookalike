@@ -1,0 +1,1 @@
+lookalike: desktop-command-not-in-package $$DATADIR/applications/"$$TARGET".desktop /usr/bin/invoker

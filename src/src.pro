@@ -6,6 +6,11 @@ include(../common.pri)
 
 TEMPLATE    = app
 
+# message( "Defines:" )
+# message( "PREFIX:" $$PREFIX )
+# message( "DATADIR:" $$DATADIR )
+# message( "PKGDATADIR:" $$PKGDATADIR )
+
 contains( debug, yes ) {
      message( "Configuring for debug build ..." )
      CONFIG += debug warn_on
@@ -49,7 +54,9 @@ QMAKE_CXXFLAGS_DEBUG += -O0 -ggdb
 QMAKE_CXXFLAGS_RELEASE += -O3
 QMAKE_DISTCLEAN += *.o moc_* Makefile*
 
-target.path = $$PREFIX/bin
+#MAKE INSTALL
+
+target.path =$$BINDIR
 INSTALLS += target
 
 OBJECTS_DIR = build/
@@ -95,3 +102,4 @@ message( "C++ Debug flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_DEBUG )
 message( "C++ Release flags:" $$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE  )
 message( "Linker flags:" $$QMAKE_LFLAGS )
 message( "LIBS flags:" $$QMAKE_LIBS )
+
