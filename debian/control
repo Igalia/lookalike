@@ -19,7 +19,7 @@ Homepage: http://igalia.github.com/lookalike
 
 Package: lookalike
 Architecture: any
-Depends: libqtcore4 (>= 4.7.4~git20120112-0maemo1+0m7),
+Depends: libqtcore4 (>= 4.7.4~git20120327-0maemo1+0m8),
          tracker (>= 0.10.29),
          ${misc:Depends},
          ${shlibs:Depends}
