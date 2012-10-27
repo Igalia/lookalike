@@ -1,5 +1,5 @@
 /*
- * This file is part of LookALike
+ * This file is part of LookAlike
  *
  * Copyright (C) 2012 Igalia S.L.
  *

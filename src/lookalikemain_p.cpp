@@ -1,5 +1,5 @@
 /*
- * This file is part of LookALike
+ * This file is part of LookAlike
  *
  * Copyright (C) 2012 Igalia S.L.
  *
@@ -367,7 +367,7 @@ void LookAlikeMainPrivate::onAboutActionTriggered()
 {
     static MApplicationPage *aboutPage = 0;
     if (aboutPage == 0) {
-        const QString title = "LookALike";
+        const QString title = "LookAlike";
         const QString version = "0.0.1";
         const QString copyright = "Copyright (c) 2012 Igalia S.L.";
         const QString contact = "<a href=\"mailto:agomez@igalia.com\">agomez@igalia.com</a> | "
