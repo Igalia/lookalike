@@ -5,15 +5,17 @@ Maintainer: Andres Gomez <agomez@igalia.com>
 Build-Depends: libgallerycore-dev (>= 1.111026.3),
                debhelper (>= 7.0.50),
                cdbs (>= 0.4.87),
+               pkg-config,
                libqt4-dev,
                libmeegotouch-dev (>= 0.20.37),
                libquillmetadata-dev,
                libqtsparql-dev (>= 0.0.17),
                libqtsparql-tracker-live-dev (>= 0.0.4),
                libfacerecognition-dev,
+               applauncherd-dev,
                aegis-builder
 Standards-Version: 3.9.1
-Homepage: https://www.igalia.com
+Homepage: http://igalia.github.com/lookalike
 
 Package: lookalike
 Architecture: any
