@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/qmake.mk
+
+DEB_DBG_PACKAGE_lookalike = lookalike-dbg
+
+ifneq (,$(filter debug,$(DEB_BUILD_OPTIONS)))
+	DEB_QMAKE_ARGS += "debug=yes"
+endif
+
+ifeq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
+	DEB_QMAKE_ARGS += "opt=yes"
+endif
+
+ifneq (,$(filter nolauncher,$(DEB_BUILD_OPTIONS)))
+	DEB_QMAKE_ARGS += "launcher=no"
+endif
+
+binary-aegisgen: binary-arch
+	aegis-deb-add -control debian/lookalike/DEBIAN/control .. debian/lookalike.aegis=_aegis
+
+binary: binary-indep binary-aegisgen
+.PHONY: binary-aegisgen

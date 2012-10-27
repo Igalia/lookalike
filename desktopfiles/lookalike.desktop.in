@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=Look Alike
+Terminal=false
+Icon=$$DATADIR/icons/hicolor/64x64/apps/icon-l-"$$TARGET".png
+Exec=/usr/bin/invoker -s -S $$DATADIR/$$TARGET/$$TARGET-splash-portrait.png -L $$DATADIR/$$TARGET/$$TARGET-splash-landscape.png --type=$$INVOKERTYPEOPTION $$BINDIR/$$TARGET

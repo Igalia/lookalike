@@ -1,0 +1,111 @@
+Source: lookalike
+Section: user/graphics
+Priority: extra
+Maintainer: Andres Gomez <agomez@igalia.com>
+Build-Depends: libgallerycore-dev (>= 1.111026.3),
+               debhelper (>= 7.0.50),
+               cdbs (>= 0.4.87),
+               libqt4-dev,
+               libmeegotouch-dev (>= 0.20.37),
+               libquillmetadata-dev,
+               libqtsparql-dev (>= 0.0.17),
+               libqtsparql-tracker-live-dev (>= 0.0.4),
+               libfacerecognition-dev,
+               aegis-builder
+Standards-Version: 3.9.1
+Homepage: https://www.igalia.com
+
+Package: lookalike
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, tracker (>= 0.10.29)
+Description: Harmattan Lookalike application.
+XB-Maemo-Icon-26:
+ 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
+ AAAGcdTyzIKiNVLK4gfsuNpu2PPbcbWNIqBsoRrnrSyjOLqgDfP/iEg95TWt
+ RRakQRHgNJW4fH+qYQCu3N+M0+QTE7AWy8Br0ohIPTX/fQGAg6ceeNHNmCHR
+ UD5SWfiYOfpvdbBdGgbAdgVX3ipQFFENgiAEuBkzdPDUAwsZ5kvMszY87WaT
+ 3xAqAiLm2L1fccnV7podgHZenWHX/piQAhE+Se+w3KxGG55eXLc0RSbUT7pN
+ qv79VV3RNTE+EbNsvybkypu8NRN+vvTflGL7NSExeSKKmASbttukAhXqJxfX
+ VeUJ3rL1if+YHXN+X4WrWQsGRUhMCZwie74k2H2DR2PLaJmnGTj+UsCx/zEQ
+ ZbDJrDpzzHINufXR8/858sCSNLmqDToOeCjTHn6xMOZl64e4DeWUKJ8Yn46L
+ A/b+kUtzhzyv0HgS2nW9w8bLFId/MsfEiQgbD5s0Apt6QAgBmfZwLg7EQ1W/
+ 1bp8uPmif7kvDOWTpalzQwSGcu5vhKKIk/Pp3S/o+by91mm+K5OBodciBn4B
+ 0ayHRbqSj1wNRLo9wnX1/f81+ucrp8rO0+9t+c6PSlPOV6KixXwKhCYiZg5c
+ n53XGy673sJ2L7TkSykODW+/rBh8WUDoIclg41HOgBE4GUW6PXr2Zye/VjNZ
+ um7ijg5z96ZaZ/tVSE8UlzMAtSyypT+md59FqkkCBq0/3fcIpA27vyDZ/nnN
+ wItFTh4J0TqNTRrHdki1RkM6zN1br/+yL0zc1P3tzykRHCzOhNubtvjs2Q/N
+ ncmjxxeC8h9rjv0CCidTZFrc9y3jffm/P3rwzXrtV3xl5vLWr7VdvX/Dyxt3
+ x7tr5fZ9Fklrzak35duv/XL8ujemv3NmubaremlKCCH+5Oa//rfunfLOVJMl
+ zr3V+ayQMQa/oMzI8dnnfvzzf/6qMWZ6pT7n9drcTX3fvGHzruIPOy5mo5Sy
+ 6nrr06L5i5Wx9+PTA0cm7nt16F+fN6sULNGLk3fc9pc3piz771rWy6syLdIR
+ QlxwMOYTqoszOj7zUfib0ckPHn3x5Z8+b4yJVu59lhp6dVYIYd123TcebF5v
+ P9jSpbd5TbhSivnf1gyUs9njoLUhKBBOj+mTk6PF7/3s8BPfNsYku2ZijV+e
+ 7uv77a6L23u/7Lrp/V7a2uNmzEavSWRtF2lZCGkv9VDmATqXBx1jlMLEIToo
+ mLmgaEaDonrT9/1fvjv+2sF33vn1lDFmTd5lW1MAaj5ACAmU81lA9u64sXV9
+ rnuDYzd3W47sNMaIMNYfx+HU2Njs6Y/eOvGrM5SvKhWgjTGf6Ov0/w/d3ByW
+ 4pIIEwAAAABJRU5ErkJggg==
+
+Package: lookalike-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, lookalike (=${binary:Version})
+Description: Debug symbols for the Look Alike application.

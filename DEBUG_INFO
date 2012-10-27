@@ -1,0 +1,145 @@
+How to compile Look Alike
+-------------------------
+
+We are using the standard Qt compiling engine, QMake. The way to
+compile Look Alike is:
+
+   qmake && make
+
+How to compile using debugging information
+------------------------------------------
+
+Look Alike uses the standard 'debug' config variable of qmake, see
+
+   http://developer.qt.nokia.com/doc/qt-4.8/qmake-project-files.html
+
+Thus you can activate the debugging options by just setting this
+variable:
+
+   qmake debug=yes && make
+
+For making this process easier, it has been added a custom script in
+the root directory of the project:
+
+   ./build.sh && make
+
+How to use the debugger
+-----------------------
+
+We use GDB to debug Look Alike.
+Refer to the GDB documentation for more information:
+
+   https://www.gnu.org/software/gdb/documentation/
+
+and:
+
+   http://harmattan-dev.nokia.com/docs/library/html/guide/html/Developer_Library_Developing_for_Harmattan_Developer_tools_Debugging_tools_Using_GDB.html
+
+How to compile with optimization flags
+--------------------------------------
+
+Look Alike uses the 'opt' custom config variable of qmake.
+
+Optimization is activated by default. Thus you can deactivate this
+option by just unsetting this variable:
+
+   qmake opt=no && make
+
+NOTE: Some of the configuration variables are mutually exclusive. For
+example, 'debug' and 'opt' are mutually exclusive. Hence, 'debug' has
+precedence over 'opt' and will cause 'opt' not to have any effect in
+case both are specified in the same compilation.
+
+How to compile with preloaded launching support
+-----------------------------------------------
+
+Look Alike uses the 'launcher' custom config variable of qmake.
+
+Compilation for preloaded launching is activated by default. Thus you
+can deactivate this option by just unsetting this variable:
+
+   qmake launcher=no && make
+
+How to package Look Alike
+-------------------------
+
+We are using the standard Debian packaging tools, so the way to create
+installable packages of Look Alike is:
+
+   dpkg-buildpackage -rfakeroot -b -us -uc
+
+This will generate the following packages:
+
+   lookalike_<version>_<arch>.deb
+   lookalike-dbg_<version>_<arch>.deb
+
+To install them, run 'dpkg -i *.deb'
+
+How to package passing the different compilation options
+--------------------------------------------------------
+
+QMake compilation options have been integrated into the Debian
+packaging, thus you can activate or deactivate them by just setting
+the environment variable 'DEB_BUILD_OPTIONS'.
+
+For example, for packaging with the debugging compilation options we
+would need to set this variable as following:
+
+   export DEB_BUILD_OPTIONS="debug nostrip"
+
+and then compiling normally:
+
+   dpkg-buildpackage -rfakeroot -b -us -uc
+
+Notice that the 'nostrip' option has to be additionally passed in this
+case in order to prevent the debian tools from removing the symbols on
+the generated binaries.
+
+These is the complete list of the correlated QMake and
+'DEB_BUILD_OPTIONS' configuration options:
+
+   * 'debug' to set "debug=yes" in QMake.
+   * 'noopt' to set "opt=no" in QMake.
+   * 'nolauncher' to set "launcher=no" in QMake.
+
+Notice that the 'DEB_BUILD_OPTIONS' have only to be set for the
+contrary value of the default one in the QMake correlated one.
+
+How to run Look Alike from the command-line
+-------------------------------------------
+
+This is how to launch Look Alike from the command line:
+
+   lookalike
+
+Integration with the Desktop
+----------------------------
+
+Look Alike provides a launcher for the Destkop (Harmattan's Home
+Screen) in the file:
+
+   desktopfiles/lookalike.desktop
+
+Therefore, if the user performs an action over this Desktop launcher,
+Look Alike will be invoked.
+
+Refer to the FreeDesktop standards:
+
+   http://standards.freedesktop.org/desktop-entry-spec/latest/
+
+Integration with the AEGIS Security Framework
+---------------------------------------------
+
+Look Alike integrates with the AEGIS Security Framework through the
+file:
+
+   debian/lookalike.aegis
+
+in which there are listed the requeste tokens hold by Look Alike.
+
+Refer to the AEGIS documentation for more information:
+
+   http://harmattan-dev.nokia.com/docs/library/html/guide/html/Developer_Library_Developing_for_Harmattan_Harmattan_security_Security_guide_Aegis_manifest_syntax.html
+
+
+ -- Andres Gomez <agomez@igalia.com>  Tue, 23 Feb 2012 19:32:00 +0200

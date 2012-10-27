@@ -1,0 +1,7 @@
+moc_*
+gen_*
+*.o
+Makefile*
+*.so
+*.so.*
+*.debhelper
