@@ -19,7 +19,10 @@ Homepage: http://igalia.github.com/lookalike
 
 Package: lookalike
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, tracker (>= 0.10.29)
+Depends: libqtcore4 (>= 4.7.4~git20120112-0maemo1+0m7),
+         tracker (>= 0.10.29),
+         ${misc:Depends},
+         ${shlibs:Depends}
 Description: Harmattan Lookalike application.
 XB-Maemo-Icon-26:
  iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgI
