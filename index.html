@@ -1,0 +1,189 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/bootstrap.css"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/script.js"></script>
+
+    <title>Look Alike</title>
+
+    <meta name="description" content="Look Alike">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- Video.js stuff -->
+    <!-- link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/c/video.js"></script -->
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="title">Look Alike</h1>
+      </header>
+      <div id="container">
+        <p class="tagline">Harmattan's Look Alike</p>
+        <div id="main" role="main">
+          <article class="markdown-body">
+            <h2>What is it?</h2>
+
+            <p><em>Look Alike</em> is an application for the batch
+            mode management of the face recognition un/tagging feature
+            included in the N9 (and N950) MeeGo devices. It provides
+            the user with contact suggestions for the faces recognized
+            in the pictures stored in the device which grow more
+            accurate the more this feature is used. It allows batch
+            mode operations for tagging the suggested contacts or
+            untagging pictures with confirmed contacts on the face
+            areas.</p>
+
+            <h2>Features:</h2>
+
+            <ul>
+              <li>"Gallery" grid view of the pictures stored in the device.</li>
+              <li>"Contacts" list view of the pictures set belonging to a certain contact.</li>
+              <li>"Suggestions" list view of the pictures suggested to belong to a certain contact.</li>
+              <li>"Landscape" grid view of the pictures stored in the device without recognized faces.</li>
+              <li>Confirming and tagging faces of a certain contact from a set of pictures in batch mode.</li>
+              <li>Removing confirmed faces of a certain contact from a set of pictures in batch mode.</li>
+              <li>Most of the functionality of the official Gallery application.</li>
+            </ul>
+
+            <h2>Funtionality through screenshots:</h2>
+
+            <div class="row">
+              <ul class="thumbnails">
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-grid-view.png" target="_blank"><img src="images/la-grid-view.png"/></a>
+                    <p class="caption">Grid view: Look Alike icon in the Harmattan applications grid</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-splash-screen.png" target="_blank"><img src="images/la-splash-screen.png"/></a>
+                    <p class="caption">Splash screen: starting, showing a splash screen</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-gallery-view.png" target="_blank"><img src="images/la-gallery-view.png"/></a>
+                    <p class="caption">Gallery view: in the first icon we have the whole set of pictures. This is equivalent to the general view in Gallery, just that it doesn't show any video</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-confirmed-faces-view.png" target="_blank"><img src="images/la-confirmed-faces-view.png"/></a>
+                    <p class="caption">Confirmed faces view: the second icon shows a list of the contacts who have being confirmed in any of the pictures. This view is similar to the contacts view in Gallery, but it also has an icon for all the pictures which have any contact confirmed on them</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-batch-deleting-faces-option.png" target="_blank"><img src="images/la-batch-deleting-faces-option.png"/></a>
+                    <p class="caption">Batch deleting faces option: when entering in one of the items from the confirmed faces view, in this case it is selected "Everybody", from the menu is possible to select an action to delete all those confirmed faces in batch mode</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-selecting-pictures-for-batch-deletion-of-confirmed-faces.png" target="_blank"><img src="images/la-selecting-pictures-for-batch-deletion-of-confirmed-faces.png"/></a>
+                    <p class="caption">Selecting pictures for batch deletion of confirmed faces: when selecting the action for deleting faces in batch mode, it is possible to select multiple pictures and select to delete all the confirmed faces on them</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-deleting-confirmed-faces-in-batch-mode.png" target="_blank"><img src="images/la-deleting-confirmed-faces-in-batch-mode.png"/></a>
+                    <p class="caption">Deleting confirmed faces in batch mode: After selecting to delete the confirmed faces from a set of pictures, we receive feedback from a progress bar</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-unconfirmed-detected-faces-view.png" target="_blank"><img src="images/la-unconfirmed-detected-faces-view.png"/></a>
+                    <p class="caption">Unconfirmed detected faces view: the third icon shows a list of the contacts who Look Alike thinks there are pictures in which detected faces could belong to them and have yet not being confirmed. In addition, we have an icon for all the pictures which have a detected face but Look Alike is unable to suggest the contact to whom them belong to</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-unknown-contact-for-detected-faces-view.png" target="_blank"><img src="images/la-unknown-contact-for-detected-faces-view.png"/></a>
+                    <p class="caption">Unknown contact for detected faces view: grid view of the "Unknown" contact: pictures with a detected face but that Look Alike is unable to suggest the contact to whom them belong to</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-batch-confirming-faces-option.png" target="_blank"><img src="images/la-batch-confirming-faces-option.png"/></a>
+                    <p class="caption">Batch confirming faces option: when entering in one of the items from the unconfirmed detected faces view, from the menu is possible to select an action to confirm all those detected faces that Look Alike suggest belongs to such contact in batch mode</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-selecting-pictures-for-batch-confirmation-of-detected-faces-with-suggested-contact.png" target="_blank"><img src="images/la-selecting-pictures-for-batch-confirmation-of-detected-faces-with-suggested-contact.png"/></a>
+                    <p class="caption">Selecting pictures for batch confirmation of detected faces with suggested contact: when selecting the batch mode action for confirming faces, it is possible to select several pictures and select to confirm all.</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-confirming-faces-in-batch-mode.png" target="_blank"><img src="images/la-confirming-faces-in-batch-mode.png"/></a>
+                    <p class="caption">Confirming faces in batch mode: after selecting to confirm the detected faces that Look Alike suggest belongs to a contact from a set of pictures, we receive feedback from a progress bar</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-landscape-view.png" target="_blank"><img src="images/la-landscape-view.png"/></a>
+                    <p class="caption">Landscape view: in the last icon we have the subset of pictures in which Look Alike has been unable to detect any faces. Hence, these should be "landscape" pictures</p>
+                  </div>
+                </li>
+                <li class="span4">
+                  <div class="thumbnail">
+                    <a href="images/la-about-dialog.png" target="_blank"><img src="images/la-about-dialog.png"/></a>
+                    <p class="caption">About dialog: about dialog with the contact information and the license</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- h2>Video explanation:</h2>
+
+            <video id="my_video_1" class="video-js vjs-default-skin" controls
+                   preload="auto" width="640" height="264" poster="http://video-js.zencoder.com/oceans-clip.jpg"
+                   data-setup="{}">
+              <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4'>
+                <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm'>
+            </video -->
+
+            <h2>Get support:</h2>
+
+            <p>Please, feel free to report any issues you might find in our
+	      <a href="https://github.com/Igalia/lookalike/issues">bug tracker</a>. If you prefer, you
+	      can also send me an email to <a href="mailto:agomez@igalia.com">agomez at igalia</a>.
+	    </p>
+
+            <h3>Known issues:</h3>
+            <ul>
+              <li>Only <em>PR &gt;= 1.3</em> is currently supported.</li>
+              <li><a href="https://github.com/Igalia/lookalike/issues/1">Issue #1</a>: When a new picture with a face is added to the device, Look Alike doesn't recognize nor suggest any face automatically; the picture must be opened in fullscreen first. Only after that, Look Alike will suggest contacts for the found faces.</li>
+            </ul>
+
+          </article>
+        </div>
+      </div>
+
+      <footer>
+        <div class="owner">
+          <p><a href="https://github.com/Igalia" class="avatar"><img src="images/igalia-logo.png" width="134" height="48"/></a> maintains <a href="https://github.com/Igalia/lookalike">Look Alike</a></p>
+        </div>
+        <div class="creds">
+          <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+        </div>
+      </footer>
+    </div>
+    <div class="current-section">
+      <a href="#top">Scroll to top</a>
+      <p class="name"></p>
+    </div>
+  </body>
+</html>
