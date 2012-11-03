@@ -25,6 +25,7 @@
 #include "facedatabaseprovider.h"
 #include "facetrackerprovider.h"
 #include "facetrackerproxy.h"
+#include "facerecognitionresetter.h"
 #include "galleryfullscreenpage.h"
 #include "gallerygridpage.h"
 #include "gallerymodel.h"
@@ -57,6 +58,13 @@ LookAlikeMainPrivate::LookAlikeMainPrivate(LookAlikeMain *q) :
     m_currentAction(0),
     q_ptr(q)
 {
+    // Less correct the problem with the DB first of all, if no other
+    // application has dealt with it first.
+    m_faceRecognitionResetter = new FaceRecognitionResetter();
+    if (!m_faceRecognitionResetter->isDBCorrected()) {
+        m_faceRecognitionResetter->dealWithDB(1);
+    }
+
     m_galleryModel = new GalleryModel(this);
     m_galleryModel->setFaceRecognitionEnabled(true);
     QSparqlConnection *connection = m_galleryModel->sparqlConnection();
@@ -174,6 +182,7 @@ LookAlikeMainPrivate::~LookAlikeMainPrivate()
     delete m_confirmedContactsListPage;
     delete m_gridPage;
     delete m_aboutAction;
+    delete m_faceRecognitionResetter;
 }
 
 QString LookAlikeMainPrivate::urnFromUrl(QUrl url)

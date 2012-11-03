@@ -33,6 +33,7 @@
 
 class FaceDatabaseProvider;
 class FaceTrackerProvider;
+class FaceRecognitionResetter;
 class GalleryFullScreenPage;
 class GalleryGridPage;
 class GalleryModel;
@@ -72,6 +73,7 @@ public:
     GalleryFullScreenPage *m_fullScreenPage;
     FaceDatabaseProvider *m_faceDatabaseProvider;
     FaceTrackerProvider *m_faceTrackerProvider;
+    FaceRecognitionResetter *m_faceRecognitionResetter;
     QString m_personSelected;
     MAction* m_confirmFaceAction;
     MAction* m_deleteFaceAction;
