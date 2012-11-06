@@ -13,6 +13,9 @@ DEB_QMAKE_ARGS += "PREFIX=\"\""
 
 DEB_DBG_PACKAGE_lookalike = lookalike-dbg
 
+# Comment this to install the lintian override files
+DEB_DH_LINTIAN_ARGS += --no-act
+
 ifneq (,$(filter debug,$(DEB_BUILD_OPTIONS)))
 	DEB_QMAKE_ARGS += "debug=yes"
 endif
