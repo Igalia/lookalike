@@ -1,0 +1,36 @@
+Link targets with SiteCatalyst tags
+
+300x50	http://store.ovi.com/content/327099
+300x75	http://store.ovi.com/content/327099
+300x50	http://store.ovi.com/content/327099
+300x75	http://store.ovi.com/content/327099
+216x36	http://store.ovi.com/content/327099
+216x54	http://store.ovi.com/content/327099
+216x36	http://store.ovi.com/content/327099
+216x54	http://store.ovi.com/content/327099
+168x28	http://store.ovi.com/content/327099
+168x42	http://store.ovi.com/content/327099
+168x28	http://store.ovi.com/content/327099
+168x42	http://store.ovi.com/content/327099
+120x20	http://store.ovi.com/content/327099
+120x30	http://store.ovi.com/content/327099
+120x20	http://store.ovi.com/content/327099
+120x30	http://store.ovi.com/content/327099
+728x90	http://store.ovi.com/content/327099
+728x90	http://store.ovi.com/content/327099
+468x60	http://store.ovi.com/content/327099
+468x60	http://store.ovi.com/content/327099
+300x250	http://store.ovi.com/content/327099
+300x250	http://store.ovi.com/content/327099
+234x60	http://store.ovi.com/content/327099
+234x60	http://store.ovi.com/content/327099
+160x600	http://store.ovi.com/content/327099
+160x600	http://store.ovi.com/content/327099
+120x600	http://store.ovi.com/content/327099
+120x600	http://store.ovi.com/content/327099
+967x277	http://store.ovi.com/content/327099
+967x277	http://store.ovi.com/content/327099
+111x111	http://store.ovi.com/content/327099
+111x111	http://store.ovi.com/content/327099
+74x74	http://store.ovi.com/content/327099
+74x74	http://store.ovi.com/content/327099
