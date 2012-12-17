@@ -12,6 +12,12 @@ accurate the more this feature is used. It allows batch mode
 operations for tagging the suggested contacts or untagging pictures
 with confirmed contacts on the face areas.
 
+Installing:
+-----------
+
+The easiet way of installing Look Alike is through its entry in the
+[Nokia Store](http://store.ovi.com/content/327099).
+
 Features:
 ---------
 
@@ -27,6 +33,13 @@ Features:
  * Removing confirmed faces of a certain contact from a set of
    pictures in batch mode.
  * Most of the functionality of the official Gallery application.
+
+Usage explanation:
+------------------
+
+For a brief usage explanation visit Look Alike's
+[page](http://igalia.github.com/lookalike/) or this
+[video explanation](http://youtu.be/wauAsm-NO2Q).
 
 Known Issues:
 -------------
